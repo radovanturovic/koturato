@@ -13,7 +13,7 @@ import java.math.*;
 
 
 /**
- * Implementations of this listener may be registered with instances of rvg.sots.CTaxonCollection to 
+ * Implementations of this listener may be registered with instances of rvg.sv.CTaxonCollection to 
  * receive notification when properties changed, added or removed.
  * <br>
  */
@@ -22,14 +22,14 @@ public interface CTaxonCollectionListener extends com.ibm.adtech.jastor.ThingLis
 
 	/**
 	 * Called when a value of cTaxonCollectionCTCTaxon has been added
-	 * @param source the affected instance of rvg.sots.CTaxonCollection
+	 * @param source the affected instance of rvg.sv.CTaxonCollection
 	 * @param newValue the object representing the new value
 	 */	
 	public void cTaxonCollectionCTCTaxonAdded(CTaxonCollection source, CTCTaxon newValue);
 
 	/**
 	 * Called when a value of cTaxonCollectionCTCTaxon has been removed
-	 * @param source the affected instance of rvg.sots.CTaxonCollection
+	 * @param source the affected instance of rvg.sv.CTaxonCollection
 	 * @param oldValue the object representing the removed value
 	 */
 	public void cTaxonCollectionCTCTaxonRemoved(CTaxonCollection source, CTCTaxon oldValue);

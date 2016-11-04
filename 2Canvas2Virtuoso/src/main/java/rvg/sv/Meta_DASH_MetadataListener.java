@@ -13,11 +13,11 @@ import java.math.*;
 
 
 /**
- * Implementations of this listener may be registered with instances of rvg.sv.Annotation to 
+ * Implementations of this listener may be registered with instances of rvg.sv.Meta_DASH_Metadata to 
  * receive notification when properties changed, added or removed.
  * <br>
  */
-public interface AnnotationListener extends com.ibm.adtech.jastor.ThingListener {
+public interface Meta_DASH_MetadataListener extends com.ibm.adtech.jastor.ThingListener {
 
 
 }

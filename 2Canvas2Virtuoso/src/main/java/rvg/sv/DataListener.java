@@ -13,7 +13,7 @@ import java.math.*;
 
 
 /**
- * Implementations of this listener may be registered with instances of rvg.sots.Data to 
+ * Implementations of this listener may be registered with instances of rvg.sv.Data to 
  * receive notification when properties changed, added or removed.
  * <br>
  */

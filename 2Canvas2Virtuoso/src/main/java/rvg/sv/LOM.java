@@ -6,7 +6,7 @@ import org.apache.jena.rdf.model.*;
 
 /**
  * Interface for LOM ontology class<br>
- * Use the rvg.sots.lom_DOT_owlFactory to create instances of this interface.
+ * Use the rvg.sv.lom_DOT_owlFactory to create instances of this interface.
  * <p>(URI: http://sots.rvg/lom.owl#LOM)</p>
  * <br>
  * <br>
@@ -233,42 +233,42 @@ public interface LOM extends com.ibm.adtech.jastor.Thing {
 	/**
 	 * Get an Iterator the 'lomMetaMetadata' property values.  This Iteartor
 	 * may be used to remove all such values.
-	 * @return		{@link java.util.Iterator} of {@link com.ibm.adtech.jastor.Thing}
+	 * @return		{@link java.util.Iterator} of {@link rvg.sv.Meta_DASH_Metadata}
 	 * @see			#lomMetaMetadataProperty
 	 */
 	public java.util.Iterator getLomMetaMetadata() throws com.ibm.adtech.jastor.JastorException;
 
 	/**
 	 * Adds a value for the 'lomMetaMetadata' property
-	 * @param		The {@link com.ibm.adtech.jastor.Thing} to add
+	 * @param		The {@link rvg.sv.Meta_DASH_Metadata} to add
 	 * @see			#lomMetaMetadataProperty
 	 */
-	public void addLomMetaMetadata(com.ibm.adtech.jastor.Thing lomMetaMetadata) throws com.ibm.adtech.jastor.JastorException;
+	public void addLomMetaMetadata(rvg.sv.Meta_DASH_Metadata lomMetaMetadata) throws com.ibm.adtech.jastor.JastorException;
 	
 	/**
 	 * Adds an anonymous value for the 'lomMetaMetadata' property
-	 * @return		The anoymous {@link com.ibm.adtech.jastor.Thing} created
+	 * @return		The anoymous {@link rvg.sv.Meta_DASH_Metadata} created
 	 * @see			#lomMetaMetadataProperty
 	 */
-	public com.ibm.adtech.jastor.Thing addLomMetaMetadata() throws com.ibm.adtech.jastor.JastorException;
+	public rvg.sv.Meta_DASH_Metadata addLomMetaMetadata() throws com.ibm.adtech.jastor.JastorException;
 	
 	/**
 	 * 
-	 * The resource argument have rdf:type http://www.w3.org/2000/01/rdf-schema#Resource.  That is, this method
+	 * The resource argument have rdf:type http://sots.rvg/lom.owl#Meta-Metadata.  That is, this method
 	 * should not be used as a shortcut for creating new objects in the model.
 	 * @param		The {@link om.hp.hpl.jena.rdf.model.Resource} to add
 	 * @see			#lomMetaMetadataProperty
 	 */
-	public com.ibm.adtech.jastor.Thing addLomMetaMetadata(Resource resource) throws com.ibm.adtech.jastor.JastorException;
+	public rvg.sv.Meta_DASH_Metadata addLomMetaMetadata(Resource resource) throws com.ibm.adtech.jastor.JastorException;
 	
 	/**
 	 * Removes a value for the 'lomMetaMetadata' property.  This method should not
 	 * be invoked while iterator through values.  In that case, the remove() method of the Iterator
 	 * itself should be used.
-	 * @param		The {@link com.ibm.adtech.jastor.Thing} to remove
+	 * @param		The {@link rvg.sv.Meta_DASH_Metadata} to remove
 	 * @see			#lomMetaMetadataProperty
 	 */
-	public void removeLomMetaMetadata(com.ibm.adtech.jastor.Thing lomMetaMetadata) throws com.ibm.adtech.jastor.JastorException;
+	public void removeLomMetaMetadata(rvg.sv.Meta_DASH_Metadata lomMetaMetadata) throws com.ibm.adtech.jastor.JastorException;
 		
 	/**
 	 * Get an Iterator the 'lomTechnical' property values.  This Iteartor

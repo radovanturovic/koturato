@@ -14,30 +14,30 @@ import com.ibm.adtech.jastor.util.*;
 
 
 /**
- * Implementation of {@link Data}
+ * Implementation of {@link Meta_DASH_Metadata}
  * Use the rvg.sv.lom_DOT_owlFactory to create instances of this class.
- * <p>(URI: http://sots.rvg/lom.owl#Data)</p>
+ * <p>(URI: http://sots.rvg/lom.owl#Meta-Metadata)</p>
  * <br>
  */
-public class DataImpl extends ThingImpl implements Data {
+public class Meta_DASH_MetadataImpl extends ThingImpl implements Meta_DASH_Metadata {
 	
 
  
 
-	DataImpl(Resource resource, Model model) throws JastorException {
+	Meta_DASH_MetadataImpl(Resource resource, Model model) throws JastorException {
 		super(resource, model);
 		setupModelListener();
 	}     
     	
-	static DataImpl getData(Resource resource, Model model) throws JastorException {
-		return new DataImpl(resource, model);
+	static Meta_DASH_MetadataImpl getMeta_DASH_Metadata(Resource resource, Model model) throws JastorException {
+		return new Meta_DASH_MetadataImpl(resource, model);
 	}
 	    
-	static DataImpl createData(Resource resource, Model model) throws JastorException { 
-		DataImpl impl = new DataImpl(resource, model);
+	static Meta_DASH_MetadataImpl createMeta_DASH_Metadata(Resource resource, Model model) throws JastorException { 
+		Meta_DASH_MetadataImpl impl = new Meta_DASH_MetadataImpl(resource, model);
 		
-		if (!impl._model.contains(new org.apache.jena.rdf.model.impl.StatementImpl(impl._resource, RDF.type, Data.TYPE)))
-			impl._model.add(impl._resource, RDF.type, Data.TYPE);
+		if (!impl._model.contains(new org.apache.jena.rdf.model.impl.StatementImpl(impl._resource, RDF.type, Meta_DASH_Metadata.TYPE)))
+			impl._model.add(impl._resource, RDF.type, Meta_DASH_Metadata.TYPE);
 		impl.addSuperTypes();
 		impl.addHasValueValues();
 		return impl;
@@ -51,13 +51,13 @@ public class DataImpl extends ThingImpl implements Data {
     
     private void setupModelListener() {
     	listeners = new java.util.ArrayList();
-    	rvg.sv.lom_DOT_owlFactory.registerThing(this);
+    	lom_DOT_owlFactory.registerThing(this);
     }
 
 	public java.util.List listStatements() {
 		java.util.List list = new java.util.ArrayList();
 		StmtIterator it = null;
-		it = _model.listStatements(_resource,RDF.type, Data.TYPE);
+		it = _model.listStatements(_resource,RDF.type, Meta_DASH_Metadata.TYPE);
 		while (it.hasNext()) {
 			list.add(it.next());
 		}
@@ -76,18 +76,18 @@ public class DataImpl extends ThingImpl implements Data {
 	private java.util.ArrayList listeners;
 	
 	public void registerListener(ThingListener listener) {
-		if (!(listener instanceof DataListener))
-			throw new IllegalArgumentException("ThingListener must be instance of DataListener"); 
+		if (!(listener instanceof Meta_DASH_MetadataListener))
+			throw new IllegalArgumentException("ThingListener must be instance of Meta_DASH_MetadataListener"); 
 		if (listeners == null)
 			setupModelListener();
 		if(!this.listeners.contains(listener)){
-			this.listeners.add((DataListener)listener);
+			this.listeners.add((Meta_DASH_MetadataListener)listener);
 		}
 	}
 	
 	public void unregisterListener(ThingListener listener) {
-		if (!(listener instanceof DataListener))
-			throw new IllegalArgumentException("ThingListener must be instance of DataListener"); 
+		if (!(listener instanceof Meta_DASH_MetadataListener))
+			throw new IllegalArgumentException("ThingListener must be instance of Meta_DASH_MetadataListener"); 
 		if (listeners == null)
 			return;
 		if (this.listeners.contains(listener)){

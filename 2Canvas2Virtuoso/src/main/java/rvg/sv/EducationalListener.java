@@ -13,7 +13,7 @@ import java.math.*;
 
 
 /**
- * Implementations of this listener may be registered with instances of rvg.sots.Educational to 
+ * Implementations of this listener may be registered with instances of rvg.sv.Educational to 
  * receive notification when properties changed, added or removed.
  * <br>
  */
@@ -22,14 +22,14 @@ public interface EducationalListener extends com.ibm.adtech.jastor.ThingListener
 
 	/**
 	 * Called when a value of educationalLearningResourceType has been added
-	 * @param source the affected instance of rvg.sots.Educational
+	 * @param source the affected instance of rvg.sv.Educational
 	 * @param newValue the object representing the new value
 	 */	
 	public void educationalLearningResourceTypeAdded(Educational source, LangString newValue);
 
 	/**
 	 * Called when a value of educationalLearningResourceType has been removed
-	 * @param source the affected instance of rvg.sots.Educational
+	 * @param source the affected instance of rvg.sv.Educational
 	 * @param oldValue the object representing the removed value
 	 */
 	public void educationalLearningResourceTypeRemoved(Educational source, LangString oldValue);

@@ -572,6 +572,67 @@ public class lom_DOT_owlFactory extends ThingFactory {
 	
 
 	/**
+	 * Create a new instance of Meta_DASH_Metadata.  Adds the rdf:type property for the given resource to the model.
+	 * @param resource The resource of the Meta_DASH_Metadata
+	 * @param model the Jena Model.
+	 */
+	public static Meta_DASH_Metadata createMeta_DASH_Metadata(Resource resource, Model model) throws JastorException {
+		return rvg.sv.Meta_DASH_MetadataImpl.createMeta_DASH_Metadata(resource,model);
+	}
+	
+	/**
+	 * Create a new instance of Meta_DASH_Metadata.  Adds the rdf:type property for the given resource to the model.
+	 * @param uri The uri of the Meta_DASH_Metadata
+	 * @param model the Jena Model.
+	 */
+	public static Meta_DASH_Metadata createMeta_DASH_Metadata(String uri, Model model) throws JastorException {
+		Meta_DASH_Metadata obj = rvg.sv.Meta_DASH_MetadataImpl.createMeta_DASH_Metadata(model.createResource(uri), model);
+		return obj;
+	}
+	
+	/**
+	 * Create a new instance of Meta_DASH_Metadata.  Leaves the model unchanged.
+	 * @param uri The uri of the Meta_DASH_Metadata
+	 * @param model the Jena Model.
+	 */
+	public static Meta_DASH_Metadata getMeta_DASH_Metadata(String uri, Model model) throws JastorException {
+		return getMeta_DASH_Metadata(model.createResource(uri),model);
+	}
+	
+	/**
+	 * Create a new instance of Meta_DASH_Metadata.  Leaves the model unchanged.
+	 * @param resource The resource of the Meta_DASH_Metadata
+	 * @param model the Jena Model.
+	 */
+	public static Meta_DASH_Metadata getMeta_DASH_Metadata(Resource resource, Model model) throws JastorException {
+		String code = (model.hashCode()*17 + Meta_DASH_Metadata.class.hashCode()) + resource.toString();
+		rvg.sv.Meta_DASH_MetadataImpl obj = (rvg.sv.Meta_DASH_MetadataImpl)objects.get(code);
+		if (obj == null) {
+			obj = rvg.sv.Meta_DASH_MetadataImpl.getMeta_DASH_Metadata(resource, model);
+			if (obj == null)
+				return null;
+			objects.put(code, obj);
+		}
+		return obj;
+	}
+	
+	/**
+	 * Return an instance of Meta_DASH_Metadata for every resource in the model with rdf:Type http://sots.rvg/lom.owl#Meta-Metadata
+	 * @param model the Jena Model
+	 * @return a List of Meta_DASH_Metadata
+	 */
+	public static java.util.List getAllMeta_DASH_Metadata(Model model) throws JastorException {
+		StmtIterator it = model.listStatements(null,RDF.type,Meta_DASH_Metadata.TYPE);
+		java.util.List list = new java.util.ArrayList();
+		while (it.hasNext()) {
+			Statement stmt = it.nextStatement();
+			list.add(getMeta_DASH_Metadata(stmt.getSubject(),model));
+		}
+		return list;
+	}
+	
+
+	/**
 	 * Create a new instance of Data.  Adds the rdf:type property for the given resource to the model.
 	 * @param resource The resource of the Data
 	 * @param model the Jena Model.
@@ -877,6 +938,67 @@ public class lom_DOT_owlFactory extends ThingFactory {
 	
 
 	/**
+	 * Create a new instance of Course.  Adds the rdf:type property for the given resource to the model.
+	 * @param resource The resource of the Course
+	 * @param model the Jena Model.
+	 */
+	public static Course createCourse(Resource resource, Model model) throws JastorException {
+		return CourseImpl.createCourse(resource,model);
+	}
+	
+	/**
+	 * Create a new instance of Course.  Adds the rdf:type property for the given resource to the model.
+	 * @param uri The uri of the Course
+	 * @param model the Jena Model.
+	 */
+	public static Course createCourse(String uri, Model model) throws JastorException {
+		Course obj = CourseImpl.createCourse(model.createResource(uri), model);
+		return obj;
+	}
+	
+	/**
+	 * Create a new instance of Course.  Leaves the model unchanged.
+	 * @param uri The uri of the Course
+	 * @param model the Jena Model.
+	 */
+	public static Course getCourse(String uri, Model model) throws JastorException {
+		return getCourse(model.createResource(uri),model);
+	}
+	
+	/**
+	 * Create a new instance of Course.  Leaves the model unchanged.
+	 * @param resource The resource of the Course
+	 * @param model the Jena Model.
+	 */
+	public static Course getCourse(Resource resource, Model model) throws JastorException {
+		String code = (model.hashCode()*17 + Course.class.hashCode()) + resource.toString();
+		CourseImpl obj = (CourseImpl)objects.get(code);
+		if (obj == null) {
+			obj = CourseImpl.getCourse(resource, model);
+			if (obj == null)
+				return null;
+			objects.put(code, obj);
+		}
+		return obj;
+	}
+	
+	/**
+	 * Return an instance of Course for every resource in the model with rdf:Type http://sots.rvg/lom.owl#Course
+	 * @param model the Jena Model
+	 * @return a List of Course
+	 */
+	public static java.util.List getAllCourse(Model model) throws JastorException {
+		StmtIterator it = model.listStatements(null,RDF.type,Course.TYPE);
+		java.util.List list = new java.util.ArrayList();
+		while (it.hasNext()) {
+			Statement stmt = it.nextStatement();
+			list.add(getCourse(stmt.getSubject(),model));
+		}
+		return list;
+	}
+	
+
+	/**
 	 * Create a new instance of DateTime.  Adds the rdf:type property for the given resource to the model.
 	 * @param resource The resource of the DateTime
 	 * @param model the Jena Model.
@@ -1075,6 +1197,9 @@ public class lom_DOT_owlFactory extends ThingFactory {
 		if (res.hasProperty(RDF.type,model.getResource("http://sots.rvg/lom.owl#DateTime"))) {
 			return getDateTime(res,model);
 		}
+		if (res.hasProperty(RDF.type,model.getResource("http://sots.rvg/lom.owl#Course"))) {
+			return getCourse(res,model);
+		}
 		if (res.hasProperty(RDF.type,model.getResource("http://sots.rvg/lom.owl#LangString"))) {
 			return getLangString(res,model);
 		}
@@ -1086,6 +1211,9 @@ public class lom_DOT_owlFactory extends ThingFactory {
 		}
 		if (res.hasProperty(RDF.type,model.getResource("http://sots.rvg/lom.owl#Duration"))) {
 			return getDuration(res,model);
+		}
+		if (res.hasProperty(RDF.type,model.getResource("http://sots.rvg/lom.owl#Meta-Metadata"))) {
+			return getMeta_DASH_Metadata(res,model);
 		}
 		if (res.hasProperty(RDF.type,model.getResource("http://sots.rvg/lom.owl#General"))) {
 			return getGeneral(res,model);
@@ -1147,6 +1275,9 @@ public class lom_DOT_owlFactory extends ThingFactory {
 		if (type.equals(DateTime.TYPE)) {
 			types.add(DateTime.class);
 		}
+		if (type.equals(Course.TYPE)) {
+			types.add(Course.class);
+		}
 		if (type.equals(LangString.TYPE)) {
 			types.add(LangString.class);
 		}
@@ -1158,6 +1289,9 @@ public class lom_DOT_owlFactory extends ThingFactory {
 		}
 		if (type.equals(Duration.TYPE)) {
 			types.add(Duration.class);
+		}
+		if (type.equals(Meta_DASH_Metadata.TYPE)) {
+			types.add(Meta_DASH_Metadata.class);
 		}
 		if (type.equals(General.TYPE)) {
 			types.add(General.class);

@@ -7,6 +7,7 @@ import org.apache.jena.datatypes.xsd.*;
 import org.apache.jena.datatypes.xsd.impl.*;
 */
 import org.apache.jena.rdf.model.*;
+import org.apache.jena.rdf.listeners.StatementListener;
 import org.apache.jena.vocabulary.RDF;
 import com.ibm.adtech.jastor.*;
 import com.ibm.adtech.jastor.util.*;
@@ -14,7 +15,7 @@ import com.ibm.adtech.jastor.util.*;
 
 /**
  * Implementation of {@link LOM}
- * Use the rvg.sots.lom_DOT_owlFactory to create instances of this class.
+ * Use the rvg.sv.lom_DOT_owlFactory to create instances of this class.
  * <p>(URI: http://sots.rvg/lom.owl#LOM)</p>
  * <br>
  */
@@ -382,7 +383,7 @@ public class LOMImpl extends ThingImpl implements LOM {
 				throw new JastorInvalidRDFNodeException (uri() + ": One of the http://sots.rvg/lom.owl#lomMetaMetadata properties in LOM model not a Resource", stmt.getObject());
 			Resource resource = (Resource) stmt.getObject().as(Resource.class);
 			if (true) { // don't check resource type if the property range is Resource
-				Thing lomMetaMetadata = ThingFactory.getThing(resource,_model);
+				rvg.sv.Meta_DASH_Metadata lomMetaMetadata = rvg.sv.lom_DOT_owlFactory.getMeta_DASH_Metadata(resource,_model);
 				this.lomMetaMetadata.add(lomMetaMetadata);
 			}
 		}
@@ -394,7 +395,7 @@ public class LOMImpl extends ThingImpl implements LOM {
 		return new CachedPropertyIterator(lomMetaMetadata,_resource,lomMetaMetadataProperty,true);
 	}
 
-	public void addLomMetaMetadata(Thing lomMetaMetadata) throws JastorException {
+	public void addLomMetaMetadata(rvg.sv.Meta_DASH_Metadata lomMetaMetadata) throws JastorException {
 		if (this.lomMetaMetadata == null)
 			initLomMetaMetadata();
 		if (this.lomMetaMetadata.contains(lomMetaMetadata)) {
@@ -406,8 +407,8 @@ public class LOMImpl extends ThingImpl implements LOM {
 		_model.add(_model.createStatement(_resource,lomMetaMetadataProperty,lomMetaMetadata.resource()));
 	}
 	
-	public Thing addLomMetaMetadata() throws JastorException {
-		Thing lomMetaMetadata = ThingFactory.createThing(_model.createResource(),_model);
+	public rvg.sv.Meta_DASH_Metadata addLomMetaMetadata() throws JastorException {
+		rvg.sv.Meta_DASH_Metadata lomMetaMetadata = rvg.sv.lom_DOT_owlFactory.createMeta_DASH_Metadata(_model.createResource(),_model);
 		if (this.lomMetaMetadata == null)
 			initLomMetaMetadata();
 		this.lomMetaMetadata.add(lomMetaMetadata);
@@ -415,8 +416,8 @@ public class LOMImpl extends ThingImpl implements LOM {
 		return lomMetaMetadata;
 	}
 	
-	public Thing addLomMetaMetadata(Resource resource) throws JastorException {
-		Thing lomMetaMetadata = ThingFactory.getThing(resource,_model);
+	public rvg.sv.Meta_DASH_Metadata addLomMetaMetadata(Resource resource) throws JastorException {
+		rvg.sv.Meta_DASH_Metadata lomMetaMetadata = rvg.sv.lom_DOT_owlFactory.getMeta_DASH_Metadata(resource,_model);
 		if (this.lomMetaMetadata == null)
 			initLomMetaMetadata();
 		if (this.lomMetaMetadata.contains(lomMetaMetadata))
@@ -426,7 +427,7 @@ public class LOMImpl extends ThingImpl implements LOM {
 		return lomMetaMetadata;
 	}
 	
-	public void removeLomMetaMetadata(Thing lomMetaMetadata) throws JastorException {
+	public void removeLomMetaMetadata(rvg.sv.Meta_DASH_Metadata lomMetaMetadata) throws JastorException {
 		if (this.lomMetaMetadata == null)
 			initLomMetaMetadata();
 		if (!this.lomMetaMetadata.contains(lomMetaMetadata))
@@ -672,9 +673,9 @@ public class LOMImpl extends ThingImpl implements LOM {
 					return;
 				Resource resource = (Resource) stmt.getObject().as(Resource.class);
 				if (true) { // don't check resource type if the property range is Resource
-					Thing _lomMetaMetadata = null;
+					rvg.sv.Meta_DASH_Metadata _lomMetaMetadata = null;
 					try {
-						_lomMetaMetadata = ThingFactory.getThing(resource,_model);
+						_lomMetaMetadata = rvg.sv.lom_DOT_owlFactory.getMeta_DASH_Metadata(resource,_model);
 					} catch (JastorException e) {
 						//e.printStackTrace();
 					}
@@ -917,11 +918,11 @@ public class LOMImpl extends ThingImpl implements LOM {
 					return;
 				Resource resource = (Resource) stmt.getObject().as(Resource.class);
 				if (true) { // don't check resource type if the property range is Resource
-					Thing _lomMetaMetadata = null;
+					rvg.sv.Meta_DASH_Metadata _lomMetaMetadata = null;
 					if (lomMetaMetadata != null) {
 						boolean found = false;
 						for (int i=0;i<lomMetaMetadata.size();i++) {
-							Thing __item = (Thing) lomMetaMetadata.get(i);
+							rvg.sv.Meta_DASH_Metadata __item = (rvg.sv.Meta_DASH_Metadata) lomMetaMetadata.get(i);
 							if (__item.resource().equals(resource)) {
 								found = true;
 								_lomMetaMetadata = __item;
@@ -932,13 +933,13 @@ public class LOMImpl extends ThingImpl implements LOM {
 							lomMetaMetadata.remove(_lomMetaMetadata);
 						else {
 							try {
-								_lomMetaMetadata = ThingFactory.getThing(resource,_model);
+								_lomMetaMetadata = rvg.sv.lom_DOT_owlFactory.getMeta_DASH_Metadata(resource,_model);
 							} catch (JastorException e) {
 							}
 						}
 					} else {
 						try {
-							_lomMetaMetadata = ThingFactory.getThing(resource,_model);
+							_lomMetaMetadata = rvg.sv.lom_DOT_owlFactory.getMeta_DASH_Metadata(resource,_model);
 						} catch (JastorException e) {
 						}
 					}

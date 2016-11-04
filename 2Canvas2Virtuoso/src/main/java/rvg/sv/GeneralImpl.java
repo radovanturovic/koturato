@@ -7,6 +7,7 @@ import org.apache.jena.datatypes.xsd.*;
 import org.apache.jena.datatypes.xsd.impl.*;
 */
 import org.apache.jena.rdf.model.*;
+import org.apache.jena.rdf.listeners.StatementListener;
 import org.apache.jena.vocabulary.RDF;
 import com.ibm.adtech.jastor.*;
 import com.ibm.adtech.jastor.util.*;
@@ -14,7 +15,7 @@ import com.ibm.adtech.jastor.util.*;
 
 /**
  * Implementation of {@link General}
- * Use the rvg.sots.lom_DOT_owlFactory to create instances of this class.
+ * Use the rvg.sv.lom_DOT_owlFactory to create instances of this class.
  * <p>(URI: http://sots.rvg/lom.owl#General)</p>
  * <br>
  */

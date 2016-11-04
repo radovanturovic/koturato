@@ -6,7 +6,7 @@ import org.apache.jena.rdf.model.*;
 
 /**
  * Interface for LifeCycle ontology class<br>
- * Use the rvg.sots.lom_DOT_owlFactory to create instances of this interface.
+ * Use the rvg.sv.lom_DOT_owlFactory to create instances of this interface.
  * <p>(URI: http://sots.rvg/lom.owl#LifeCycle)</p>
  * <br>
  * <br>
