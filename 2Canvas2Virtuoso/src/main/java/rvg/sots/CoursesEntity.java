@@ -1,11 +1,13 @@
 package rvg.sots;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Timestamp;
 
 /**
  * Created by charmingc0d3r on 4.11.16..
  */
+@XmlRootElement
 @Entity
 @Table(name = "courses", schema = "public", catalog = "canvas_development")
 public class CoursesEntity {

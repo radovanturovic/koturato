@@ -1,5 +1,10 @@
 package rvg.sots;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.*;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -8,7 +13,7 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name = "attachments", schema = "public", catalog = "canvas_development")
-public class AttachmentsEntity {
+public class AttachmentsEntity{
     private long id;
     private Long contextId;
     private String contextType;
@@ -430,5 +435,47 @@ public class AttachmentsEntity {
         result = 31 * result + (uploadErrorMessage != null ? uploadErrorMessage.hashCode() : 0);
         result = 31 * result + (modifiedAt != null ? modifiedAt.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AttachmentsEntity{" +
+                "id=" + id +
+                ", contextId=" + contextId +
+                ", contextType='" + contextType + '\'' +
+                ", size=" + size +
+                ", folderId=" + folderId +
+                ", contentType='" + contentType + '\'' +
+                ", filename='" + filename + '\'' +
+                ", uuid='" + uuid + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", workflowState='" + workflowState + '\'' +
+                ", userId=" + userId +
+                ", locked=" + locked +
+                ", fileState='" + fileState + '\'' +
+                ", deletedAt=" + deletedAt +
+                ", position=" + position +
+                ", lockAt=" + lockAt +
+                ", unlockAt=" + unlockAt +
+                ", lastLockAt=" + lastLockAt +
+                ", lastUnlockAt=" + lastUnlockAt +
+                ", couldBeLocked=" + couldBeLocked +
+                ", clonedItemId=" + clonedItemId +
+                ", migrationId='" + migrationId + '\'' +
+                ", namespace='" + namespace + '\'' +
+                ", mediaEntryId='" + mediaEntryId + '\'' +
+                ", md5='" + md5 + '\'' +
+                ", encoding='" + encoding + '\'' +
+                ", needNotify=" + needNotify +
+                ", uploadErrorMessage='" + uploadErrorMessage + '\'' +
+                ", modifiedAt=" + modifiedAt +
+                '}';
+    }
+
+    public static void triggeredFunction(Integer id) {
+
+        System.out.println(id);
     }
 }
