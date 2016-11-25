@@ -4,7 +4,6 @@ import rvg.sots.AttachmentsEntity;
 import rvg.sots.AttachmentsFrontEntity;
 import rvg.sots.CoursesEntity;
 import rvg.sv.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import virtuoso.jena.driver.VirtModel;
 
 import java.util.Iterator;
@@ -79,7 +78,17 @@ public class Interchange {
         //general.addGeneralDescription(generalDescription);
         result.addLomGeneral(general);
 
-        throw new NotImplementedException();
+        /*
+        * Puna putanja do resursa.
+        */
+        Technical technical = lom_DOT_owlFactory.createTechnical(Defaults.getFullId("d"+id),demode);
+        /* FIXME: 25.11.16. Ono sto se moze preuzeti iz osobina jeste putanja do svih resursa. Potrebno je dopuniti ovaj
+        * deo koda da pogodi doslovnu punu putanju do resursa. Druga opcija je da se svaki put ova putanja izracuna po
+        * potrebi da se ne bi puna putanja do datoteke cuvala u bazi podataka. */
+        technical.addTec_DOT_location(Defaults.getProps22().getProperty("canvasAttachmentsPath"));
+        result.addLomTechnical(technical);
+
+        return result;
     }
     public static LOM LearningObjectPostgresToVirtuoso(AttachmentsFrontEntity learningObject) {
         LOM result = LearningObjectPostgresToVirtuoso(((AttachmentsEntity)learningObject));
