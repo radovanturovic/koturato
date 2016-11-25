@@ -26,4 +26,8 @@ public class AttachmentsFrontEntity extends AttachmentsEntity {
     public void setAttachmentType(String attachmentType) {
         this.attachmentType = attachmentType;
     }
+
+    public void addCompetency(String competency) {
+        competencies.add(competency);
+    }
 }

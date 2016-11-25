@@ -1,5 +1,9 @@
 package rvg.sots;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Timestamp;
@@ -592,6 +596,24 @@ public class CoursesEntity {
         result = 31 * result + (timeZone != null ? timeZone.hashCode() : 0);
         result = 31 * result + (ltiContextId != null ? ltiContextId.hashCode() : 0);
         result = 31 * result + (turnitinId != null ? turnitinId.hashCode() : 0);
+        return result;
+    }
+
+    public static CoursesEntity getById(Long id) {
+
+        Configuration c = new Configuration();
+        c.configure("hibernate.config.xml");
+
+        // creating seession factory object
+        SessionFactory factory = c.buildSessionFactory();
+
+        // creating session object
+        Session session = factory.openSession();
+
+        CoursesEntity result = null;
+        result = session.get(CoursesEntity.class,id);
+        session.close();
+        factory.close();
         return result;
     }
 }

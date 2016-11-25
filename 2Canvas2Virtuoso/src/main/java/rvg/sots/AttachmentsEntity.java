@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.*;
+import org.hibernate.query.Query;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -477,5 +478,38 @@ public class AttachmentsEntity{
     public static void triggeredFunction(Integer id) {
 
         System.out.println(id);
+    }
+
+    public static AttachmentsEntity getById(Long id) {
+
+        Configuration c = new Configuration();
+        c.configure("hibernate.config.xml");
+
+        // creating seession factory object
+        SessionFactory factory = c.buildSessionFactory();
+
+        // creating session object
+        Session session = factory.openSession();
+
+        AttachmentsEntity result = null;
+        result = session.get(AttachmentsEntity.class,id);
+        session.close();
+        factory.close();
+        return result;
+    }
+
+    public static void loadById(AttachmentsEntity entity, Long id) {
+
+        Configuration c = new Configuration();
+        c.configure("hibernate.config.xml");
+
+        // creating seession factory object
+        SessionFactory factory = c.buildSessionFactory();
+
+        // creating session object
+        Session session = factory.openSession();
+        session.load(entity,id);
+        session.close();
+        factory.close();
     }
 }
