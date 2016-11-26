@@ -1,5 +1,6 @@
 package rvg.sots;
 
+import org.postgresql.pljava.annotation.Function;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -7,11 +8,15 @@ import org.hibernate.query.*;
 import org.hibernate.query.Query;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by charmingc0d3r on 4.11.16..
  */
+@XmlRootElement
 @Entity
 @Table(name = "attachments", schema = "public", catalog = "canvas_development")
 public class AttachmentsEntity{
@@ -475,9 +480,31 @@ public class AttachmentsEntity{
                 '}';
     }
 
-    public static void triggeredFunction(Integer id) {
+    @Function
+    public static String triggeredFunction(Long id) {
+        try{
+            //List<String> string = new ArrayList<String>();
+            //string.add(new Date().toString() + " || id: " + id);
+            //Files.write(Paths.get("/home/charmingc0d3r/sotsv.debug.txt"), string, UTF_8,APPEND, CREATE);
+            AttachmentsEntity ae = AttachmentsEntity.getById(id);
+            return ae.toString();
+        } catch (Exception e) {
+            return e.toString();
+        }
+    }
 
-        System.out.println(id);
+    @Function
+    public static String triggeredFunction(int id) {
+        return triggeredFunction(new Long(id));
+    }
+
+    public static void triggeredFunction(AttachmentsEntity entity) {
+        try{
+            PrintWriter writer = new PrintWriter("~/debug.txt", "UTF-8");
+            writer.println(new Date().toString() + " || entity: " + entity.toString());
+            writer.close();
+        } catch (Exception e) {
+        }
     }
 
     public static AttachmentsEntity getById(Long id) {
@@ -492,7 +519,19 @@ public class AttachmentsEntity{
         Session session = factory.openSession();
 
         AttachmentsEntity result = null;
-        result = session.get(AttachmentsEntity.class,id);
+        //result = session.get(AttachmentsEntity.class,id);
+        Query query = session.createQuery("from AttachmentsEntity");
+        java.util.List list = query.list();
+
+        System.out.println(list);
+        for (Object o: list
+                ) {
+            AttachmentsEntity ce = (AttachmentsEntity) o;
+            if (ce.getId()==id) {
+                result = ce;
+                break;
+            }
+        }
         session.close();
         factory.close();
         return result;
