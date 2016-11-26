@@ -26,8 +26,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="2Canvas2Virtuoso" target="1.5" />
-      <module name="GenPojoFromRDF" target="1.5" />
+      <module name="2Canvas2Virtuoso" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
