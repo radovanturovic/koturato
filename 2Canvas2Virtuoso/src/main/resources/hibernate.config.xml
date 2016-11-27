@@ -8,9 +8,11 @@
     <property name="connection.password">postgres</property>
     <property name="connection.url">jdbc:postgresql://localhost:5432/canvas_development</property>
     <property name="connection.driver_class">org.postgresql.Driver</property>
+
+    <!-- DB schema will be updated if needed -->
+    <property name="hbm2ddl.auto">update</property>
+
       <mapping class="rvg.sots.AttachmentsEntity"/>
       <mapping class="rvg.sots.CoursesEntity"/>
-      <!-- DB schema will be updated if needed -->
-    <!-- <property name="hbm2ddl.auto">update</property> -->
   </session-factory>
 </hibernate-configuration>

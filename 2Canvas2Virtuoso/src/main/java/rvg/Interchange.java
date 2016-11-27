@@ -31,7 +31,9 @@ public class Interchange {
         /*
         * Popunjavanje podataka koji se nalaze u PG bazi.
         */
-        AttachmentsEntity.loadById(result,Defaults.parseID(learningObject.resource().getURI(),"lom"));
+        AttachmentsEntity resultae = new AttachmentsEntity();
+        AttachmentsEntity.loadById(resultae,Defaults.parseID(learningObject.resource().getURI(),"lom"));
+        result.setCore(resultae);
 
         /*
         * Dodela tipa resursa.
@@ -91,8 +93,8 @@ public class Interchange {
         return result;
     }
     public static LOM LearningObjectPostgresToVirtuoso(AttachmentsFrontEntity learningObject) {
-        LOM result = LearningObjectPostgresToVirtuoso(((AttachmentsEntity)learningObject));
-        Long id = learningObject.getId();
+        LOM result = LearningObjectPostgresToVirtuoso(learningObject.getCore());
+        Long id = learningObject.getCore().getId();
         VirtModel demode = Defaults.getVirtuosoModel();
 
         /*
