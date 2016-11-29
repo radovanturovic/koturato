@@ -2,6 +2,8 @@ package rvg;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import rvg.sots.AttachmentsEntity;
+import rvg.sots.AttachmentsFrontEntity;
 import virtuoso.jena.driver.VirtModel;
 
 import java.io.*;
@@ -48,5 +50,11 @@ public class Defaults {
     }
     public static Long parseID(String uri, String miniPrefix) {
         return Long.parseLong(substringID(uri,miniPrefix));
+    }
+    public static String getFullPath(AttachmentsEntity learningObject) {
+        return Defaults.getProps22().getProperty("canvasAttachmentsPath")+"/"+String.format("%04d", learningObject.getId())+"/"+learningObject.getFilename();
+    }
+    public static String getFullPath(AttachmentsFrontEntity learningObject) {
+        return getFullPath(learningObject.getCore());
     }
 }

@@ -25,7 +25,7 @@ public class Interchange {
         AttachmentsEntity result = AttachmentsEntity.getById(Defaults.parseID(learningObject.resource().getURI(),"lom"));
         return result;
     }
-    public static AttachmentsFrontEntity learningObjectVirtuosoToPostgresFront(LOM learningObject) {
+    public static AttachmentsFrontEntity LearningObjectVirtuosoToPostgresFront(LOM learningObject) {
         AttachmentsFrontEntity result = new AttachmentsFrontEntity();
 
         /*
@@ -87,7 +87,7 @@ public class Interchange {
         /* FIXME: 25.11.16. Ono sto se moze preuzeti iz osobina jeste putanja do svih resursa. Potrebno je dopuniti ovaj
         * deo koda da pogodi doslovnu punu putanju do resursa. Druga opcija je da se svaki put ova putanja izracuna po
         * potrebi da se ne bi puna putanja do datoteke cuvala u bazi podataka. */
-        technical.addTec_DOT_location(Defaults.getProps22().getProperty("canvasAttachmentsPath"));
+        technical.addTec_DOT_location(Defaults.getProps22().getProperty("canvasAttachmentsPath")+"/"+String.format("%04d", id)+"/"+learningObject.getFilename());
         result.addLomTechnical(technical);
 
         return result;

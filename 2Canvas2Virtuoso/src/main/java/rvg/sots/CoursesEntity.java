@@ -3,10 +3,14 @@ package rvg.sots;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.*;
+import rvg.Interchange;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by charmingc0d3r on 4.11.16..
@@ -612,6 +616,24 @@ public class CoursesEntity {
 
         CoursesEntity result = null;
         result = session.get(CoursesEntity.class,id);
+        session.close();
+        factory.close();
+        return result;
+    }
+
+    public static List<CoursesEntity> getAll() {
+
+        Configuration c = new Configuration();
+        c.configure("hibernate.config.xml");
+
+        // creating seession factory object
+        SessionFactory factory = c.buildSessionFactory();
+
+        // creating session object
+        Session session = factory.openSession();
+
+        org.hibernate.query.Query query = session.createQuery("from CoursesEntity");
+        java.util.List<CoursesEntity> result = query.list();
         session.close();
         factory.close();
         return result;
