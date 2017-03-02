@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.*;
 import org.hibernate.query.Query;
+import org.postgresql.pljava.annotation.MappedUDT;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -19,6 +20,41 @@ import java.util.Date;
 @XmlRootElement
 @Entity
 @Table(name = "attachments", schema = "public", catalog = "canvas_development")
+@MappedUDT(name = "attachments", schema = "public", structure = {"id bigint",
+        "context_id bigint",
+        "context_type character varying",
+        "size bigint",
+        "folder_id bigint",
+        "content_type character varying",
+        "filename text",
+        "uuid character varying",
+        "display_name text",
+        "created_at timestamp without time zone",
+        "updated_at timestamp without time zone",
+        "workflow_state character varying",
+        "user_id bigint",
+        "locked boolean",
+        "file_state character varying",
+        "deleted_at timestamp without time zone",
+        "position integer",
+        "lock_at timestamp without time zone",
+        "unlock_at timestamp without time zone",
+        "last_lock_at timestamp without time zone",
+        "last_unlock_at timestamp without time zone",
+        "could_be_locked boolean",
+        "root_attachment_id bigint",
+        "cloned_item_id bigint",
+        "migration_id character varying",
+        "namespace character varying",
+        "media_entry_id character varying",
+        "md5 character varying",
+        "encoding character varying",
+        "need_notify boolean",
+        "upload_error_message character varying",
+        "replacement_attachment_id bigint",
+        "usage_rights_id bigint",
+        "modified_at timestamp without time zone"
+})
 public class AttachmentsEntity{
     private long id;
     private Long contextId;

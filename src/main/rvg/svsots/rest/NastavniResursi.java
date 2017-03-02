@@ -4,11 +4,15 @@ import rvg.Defaults;
 import rvg.Interchange;
 import rvg.sots.AttachmentsEntity;
 import rvg.sots.AttachmentsFrontEntity;
+import rvg.sots.CoursesEntity;
+import rvg.sots.util.Packager;
+import rvg.sv.Course;
 import rvg.sv.LangString;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ParamConverter;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -142,38 +146,57 @@ public class NastavniResursi {
     @GET
     @Path("/download")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response getFiles(@FormParam("id") String id) throws IOException {
+    public Response getFiles(@FormParam("id") String id, @FormParam("imscc") boolean imscc) throws IOException {
         Response.ResponseBuilder response;
         if (id == null)
             response = Response.noContent();
         else if (id.trim().equals(""))
             response = Response.noContent();
         else {
-            String newPath = "/tmp/download"+ new Random(new Date().getTime()).nextDouble()+".zip";
-            FileOutputStream fos = new FileOutputStream(newPath);
-            ZipOutputStream zos = new ZipOutputStream(fos);
-            String[] ids = id.split(" ");
-            byte[] buffer = new byte[1024];
-            for (String pid :
-                    ids) {
-                try {
-                    AttachmentsFrontEntity afe = AttachmentsFrontEntity.getById(Long.parseLong(pid));
-                    ZipEntry ze = new ZipEntry(afe.getCore().getFilename());
-                    zos.putNextEntry(ze);
-                    FileInputStream in = new FileInputStream(Defaults.getFullPath(afe));
-                    int len;
-                    while ((len = in.read(buffer)) > 0) {
-                        zos.write(buffer, 0, len);
-                    }
-
-                    in.close();
-                    zos.closeEntry();
-                } catch (NumberFormatException nfe) {}
-            }
-            zos.close();
-            File file = new File(newPath);
+            String newPath[] = Packager.zip(id,imscc,false,null);
+            File file = new File(newPath[1]);
             response = Response.ok((Object) file);
-            response.header("Content-Disposition", "attachment; filename=download.zip");
+            response.header("Content-Disposition", "attachment; filename="+newPath[0]);
+        }
+        return response.build();
+    }
+
+    @GET
+    @Path("/export/{cid}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getExport(@PathParam("cid") String cid, @FormParam("scorm") Boolean scorm) throws IOException {
+        Response.ResponseBuilder response;
+        if (cid == null)
+            response = Response.noContent();
+        else if (cid.trim().equals(""))
+            response = Response.noContent();
+        else {
+            String id = "";
+            long lcid = -1;
+            try {
+                lcid = Long.parseUnsignedLong(cid);
+            } catch (NumberFormatException nfe) {
+                response = Response.noContent();
+                return response.build();
+            }
+            if (CoursesEntity.getById(lcid)==null) {
+                response = Response.noContent();
+                return response.build();
+            }
+            for (AttachmentsFrontEntity afe :
+                    AttachmentsFrontEntity.getAll()) {
+                if (afe.getCore().getContentType().equals("Course") && afe.getCore().getContextId()==lcid)
+                    id += " " + afe.getCore().getId();
+            }
+            id = id.trim();
+            if (id.equals("")) {
+                response = Response.noContent();
+                return response.build();
+            }
+            String newPath[] = Packager.zip(id,false,scorm,null);
+            File file = new File(newPath[1]);
+            response = Response.ok((Object) file);
+            response.header("Content-Disposition", "attachment; filename="+newPath[0]);
         }
         return response.build();
     }

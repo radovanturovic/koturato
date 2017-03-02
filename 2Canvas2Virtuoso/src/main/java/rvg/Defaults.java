@@ -14,8 +14,8 @@ import java.util.Properties;
  */
 public class Defaults {
 
-    static final String PREFIX = "http://test.sots.sv.gvr/";
-    static final int PREFIX_LENGTH = PREFIX.length();
+    static String prefix = "http://test.sots.sv.gvr/";
+    static int prefixLength = prefix.length();
 
     private static VirtModel vm = null;
     public static Properties props22 = null;
@@ -25,6 +25,9 @@ public class Defaults {
             props22 = new Properties();
             try {
                 props22.load(new FileInputStream("2Canvas2Virtuoso.properties"));
+
+                prefix = props22.getProperty("virtuosoPrefix");
+                prefixLength = prefix.length();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -35,18 +38,18 @@ public class Defaults {
         if (vm!=null)
             return vm;
         Model model = ModelFactory.createDefaultModel();
-        VirtModel vmodel = VirtModel.openDatabaseModel(PREFIX,"localhost:1111","dba","dba");
+        VirtModel vmodel = VirtModel.openDatabaseModel(prefix,"localhost:1111","dba","dba");
         vmodel.add(model);
         vm = vmodel;
         return vm;
     }
     //public static String getFullId(Long id) { return getFullId(id.toString());}
     public static String getFullId(String id) {
-        return PREFIX + id;
+        return prefix + id;
     }
 
     public static String substringID(String uri, String miniPrefix) {
-        return uri.substring(PREFIX_LENGTH+miniPrefix.length());
+        return uri.substring(prefixLength+miniPrefix.length());
     }
     public static Long parseID(String uri, String miniPrefix) {
         return Long.parseLong(substringID(uri,miniPrefix));
@@ -56,5 +59,13 @@ public class Defaults {
     }
     public static String getFullPath(AttachmentsFrontEntity learningObject) {
         return getFullPath(learningObject.getCore());
+    }
+
+    public static String getSCORMManifestPath() {
+        return getProps22().getProperty("SCORMManifestPath");
+    }
+
+    public static String getSCORMDriverPath() {
+        return getProps22().getProperty("SCORMDriverPath");
     }
 }

@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.*;
+import org.postgresql.pljava.annotation.MappedUDT;
 import rvg.Interchange;
 
 import javax.persistence.*;
@@ -18,6 +19,56 @@ import java.util.List;
 @XmlRootElement
 @Entity
 @Table(name = "courses", schema = "public", catalog = "canvas_development")
+@MappedUDT(name = "courses", schema = "public",structure = {"id bigint",
+        "name character varying",
+        "account_id bigint",
+        "group_weighting_scheme character varying",
+        "old_account_id bigint",
+        "workflow_state character varying",
+        "uuid character varying",
+        "start_at timestamp without time zone",
+        "conclude_at timestamp without time zone",
+        "grading_standard_id bigint",
+        "is_public boolean",
+        "allow_student_wiki_edits boolean",
+        "created_at timestamp without time zone",
+        "updated_at timestamp without time zone",
+        "show_public_context_messages boolean",
+        "syllabus_body text",
+        "allow_student_forum_attachments boolean",
+        "default_wiki_editing_roles character varying",
+        "wiki_id bigint",
+        "allow_student_organized_groups boolean",
+        "course_code character varying",
+        "default_view character varying",
+        "abstract_course_id bigint",
+        "root_account_id bigint",
+        "enrollment_term_id bigint",
+        "sis_source_id character varying",
+        "sis_batch_id bigint",
+        "show_all_discussion_entries boolean",
+        "open_enrollment boolean",
+        "storage_quota bigint",
+        "tab_configuration text",
+        "allow_wiki_comments boolean",
+        "turnitin_comments text",
+        "self_enrollment boolean",
+        "license character varying",
+        "indexed boolean",
+        "restrict_enrollments_to_course_dates boolean",
+        "template_course_id bigint",
+        "locale character varying",
+        "settings text",
+        "replacement_course_id bigint",
+        "stuck_sis_fields text",
+        "public_description text",
+        "self_enrollment_code character varying",
+        "self_enrollment_limit integer",
+        "integration_id character varying",
+        "time_zone character varying",
+        "lti_context_id character varying",
+        "turnitin_id bigint"
+})
 public class CoursesEntity {
     private long id;
     private String name;
