@@ -38,20 +38,31 @@ public class Interchange {
         /*
         * Dodela tipa resursa.
         */
-        Educational tEdu = (Educational)(learningObject.getLomEducational().next());
-        LangString tls = (LangString)(tEdu.getEducationalLearningResourceType().next());
-        result.setAttachmentType(tls.getDat_DOT_las_DOT_string().next().toString());
+        if (learningObject.getLomEducational().hasNext()) {
+            Educational tEdu = (Educational) (learningObject.getLomEducational().next());
+            if (tEdu.getEducationalLearningResourceType().hasNext()) {
+                LangString tls = (LangString) (tEdu.getEducationalLearningResourceType().next());
+                result.setAttachmentType(tls.getDat_DOT_las_DOT_string().next().toString());
+            }
+        }
 
         /*
         * Dodela kompetencija.
         */
-        Classification tclassification = (Classification)(learningObject.getLomClassification().next());
-        CTaxonCollection tcTaxonCollection = (CTaxonCollection)(tclassification.getClassificationCTaxonPath().next());
-        CTCTaxon tctcTaxon = (CTCTaxon)(tcTaxonCollection.getCTaxonCollectionCTCTaxon().next());
-        Iterator<LangString> iter = tctcTaxon.getCtcTaxonEntry();
-        while (iter.hasNext()) {
-            tls = iter.next();
-            result.addCompetency(tls.getDat_DOT_las_DOT_string().next().toString());
+        if (learningObject.getLomClassification().hasNext()) {
+            Classification tclassification = (Classification) (learningObject.getLomClassification().next());
+            if (tclassification.getClassificationCTaxonPath().hasNext()) {
+                CTaxonCollection tcTaxonCollection = (CTaxonCollection) (tclassification.getClassificationCTaxonPath().next());
+                if (tcTaxonCollection.getCTaxonCollectionCTCTaxon().hasNext()) {
+                    CTCTaxon tctcTaxon = (CTCTaxon) (tcTaxonCollection.getCTaxonCollectionCTCTaxon().next());
+                    Iterator<LangString> iter = tctcTaxon.getCtcTaxonEntry();
+                    LangString tls;
+                    while (iter.hasNext()) {
+                        tls = iter.next();
+                        result.addCompetency(tls.getDat_DOT_las_DOT_string().next().toString());
+                    }
+                }
+            }
         }
 
         return result;
