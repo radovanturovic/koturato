@@ -11,7 +11,7 @@ import org.postgresql.pljava.annotation.MappedUDT;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.PrintWriter;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.Date;
 
 /**
@@ -42,7 +42,7 @@ import java.util.Date;
         "last_lock_at timestamp without time zone",
         "last_unlock_at timestamp without time zone",
         "could_be_locked boolean",
-        "root_attachment_id bigint",
+        //"root_attachment_id bigint",
         "cloned_item_id bigint",
         "migration_id character varying",
         "namespace character varying",
@@ -51,11 +51,11 @@ import java.util.Date;
         "encoding character varying",
         "need_notify boolean",
         "upload_error_message character varying",
-        "replacement_attachment_id bigint",
-        "usage_rights_id bigint",
+        //"replacement_attachment_id bigint",
+        //"usage_rights_id bigint",
         "modified_at timestamp without time zone"
 })
-public class AttachmentsEntity{
+public class AttachmentsEntity implements SQLData{
     private long id;
     private Long contextId;
     private String contextType;
@@ -87,6 +87,7 @@ public class AttachmentsEntity{
     private Boolean needNotify;
     private String uploadErrorMessage;
     private Timestamp modifiedAt;
+    private String josdebilnijedebilannizkaraktera;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -587,5 +588,88 @@ public class AttachmentsEntity{
         session.load(entity,id);
         session.close();
         factory.close();
+    }
+
+    @Transient
+    @Override
+    public String getSQLTypeName() throws SQLException {
+        return josdebilnijedebilannizkaraktera;
+    }
+
+    @Override
+    public void readSQL(SQLInput stream, String typeName) throws SQLException {
+        josdebilnijedebilannizkaraktera = typeName;
+        id = stream.readLong();
+        contextId = stream.readLong();
+        contextType = stream.readString();
+        size = stream.readLong();
+        folderId = stream.readLong();
+        contentType = stream.readString();
+        filename = stream.readString();
+        uuid = stream.readString();
+        displayName = stream.readString();
+        createdAt = stream.readTimestamp();
+        updatedAt = stream.readTimestamp();
+        workflowState = stream.readString();
+        userId = stream.readLong();
+        locked = stream.readBoolean();
+        fileState = stream.readString();
+        deletedAt = stream.readTimestamp();
+        position = stream.readInt();
+        lockAt = stream.readTimestamp();
+        unlockAt = stream.readTimestamp();
+        lastLockAt = stream.readTimestamp();
+        lastUnlockAt = stream.readTimestamp();
+        couldBeLocked = stream.readBoolean();
+                //"root_attachment_id bigint";
+        clonedItemId = stream.readLong();
+        migrationId = stream.readString();
+        namespace = stream.readString();
+        mediaEntryId = stream.readString();
+        md5 = stream.readString();
+        encoding = stream.readString();
+        needNotify = stream.readBoolean();
+        uploadErrorMessage = stream.readString();
+        //        "replacement_attachment_id bigint";
+        //       "usage_rights_id bigint";
+        modifiedAt = stream.readTimestamp();
+    }
+
+    @Override
+    public void writeSQL(SQLOutput stream) throws SQLException {
+        stream.writeLong(id);
+        stream.writeLong(contextId);
+        stream.writeString(contentType);
+        stream.writeLong(size);
+        stream.writeLong(folderId);
+        stream.writeString(contentType);
+        stream.writeString(filename);
+        stream.writeString(uuid);
+        stream.writeString(displayName);
+        stream.writeTimestamp(createdAt);
+        stream.writeTimestamp(updatedAt);
+        stream.writeString(workflowState);
+        stream.writeLong(userId);
+        stream.writeBoolean(locked);
+        stream.writeString(fileState);
+        stream.writeTimestamp(deletedAt);
+        stream.writeInt(position);
+        stream.writeTimestamp(lockAt);
+        stream.writeTimestamp(unlockAt);
+        stream.writeTimestamp(lastLockAt);
+        stream.writeTimestamp(lastUnlockAt);
+        stream.writeBoolean(couldBeLocked);
+        //"root_attachment_id bigint";
+        stream.writeLong(clonedItemId);
+        stream.writeString(migrationId);
+        stream.writeString(namespace);
+        stream.writeString(mediaEntryId);
+        stream.writeString(md5);
+        stream.writeString(encoding);
+        stream.writeBoolean(needNotify);
+        stream.writeString(uploadErrorMessage);
+        //        "replacement_attachment_id bigint";
+        //       "usage_rights_id bigint";
+        stream.writeTimestamp(modifiedAt);
     }
 }

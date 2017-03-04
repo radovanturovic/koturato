@@ -9,7 +9,7 @@ import rvg.Interchange;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +21,7 @@ import java.util.List;
 @Table(name = "courses", schema = "public", catalog = "canvas_development")
 @MappedUDT(name = "courses", schema = "public",structure = {"id bigint",
         "name character varying",
-        "account_id bigint",
+        //"account_id bigint",
         "group_weighting_scheme character varying",
         "old_account_id bigint",
         "workflow_state character varying",
@@ -37,15 +37,15 @@ import java.util.List;
         "syllabus_body text",
         "allow_student_forum_attachments boolean",
         "default_wiki_editing_roles character varying",
-        "wiki_id bigint",
+        //"wiki_id bigint",
         "allow_student_organized_groups boolean",
         "course_code character varying",
         "default_view character varying",
-        "abstract_course_id bigint",
-        "root_account_id bigint",
-        "enrollment_term_id bigint",
+        //"abstract_course_id bigint",
+        //"root_account_id bigint",
+        //"enrollment_term_id bigint",
         "sis_source_id character varying",
-        "sis_batch_id bigint",
+        //"sis_batch_id bigint",
         "show_all_discussion_entries boolean",
         "open_enrollment boolean",
         "storage_quota bigint",
@@ -56,7 +56,7 @@ import java.util.List;
         "license character varying",
         "indexed boolean",
         "restrict_enrollments_to_course_dates boolean",
-        "template_course_id bigint",
+        //"template_course_id bigint",
         "locale character varying",
         "settings text",
         "replacement_course_id bigint",
@@ -69,7 +69,7 @@ import java.util.List;
         "lti_context_id character varying",
         "turnitin_id bigint"
 })
-public class CoursesEntity {
+public class CoursesEntity implements SQLData{
     private long id;
     private String name;
     private String groupWeightingScheme;
@@ -112,6 +112,7 @@ public class CoursesEntity {
     private String timeZone;
     private String ltiContextId;
     private Long turnitinId;
+    private String debilnodebilannizkaraktera;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -688,5 +689,115 @@ public class CoursesEntity {
         session.close();
         factory.close();
         return result;
+    }
+
+    @Override
+    @Transient
+    public String getSQLTypeName() throws SQLException {
+        return debilnodebilannizkaraktera;
+    }
+
+    @Override
+    public void readSQL(SQLInput stream, String typeName) throws SQLException {
+        debilnodebilannizkaraktera = typeName;
+        id = stream.readLong();
+        name = stream.readString();
+        // "account_id bigint"
+        groupWeightingScheme = stream.readString();
+        oldAccountId = stream.readLong();
+        workflowState = stream.readString();
+        uuid = stream.readString();
+        startAt = stream.readTimestamp();
+        concludeAt = stream.readTimestamp();
+        gradingStandardId = stream.readLong();
+        isPublic = stream.readBoolean();
+        allowStudentWikiEdits = stream.readBoolean();
+        createdAt = stream.readTimestamp();
+        updatedAt = stream.readTimestamp();
+        showPublicContextMessages = stream.readBoolean();
+        syllabusBody = stream.readString();
+        allowStudentForumAttachments = stream.readBoolean();
+        defaultWikiEditingRoles = stream.readString();
+        // "wiki_id bigint";
+        allowStudentOrganizedGroups = stream.readBoolean();
+        courseCode = stream.readString();
+        defaultView = stream.readString();
+        // "abstract_course_id bigint"
+        // "root_account_id bigint"
+        // "enrollment_term_id bigint",
+        sisSourceId = stream.readString();
+        // "sis_batch_id bigint"
+        showAllDiscussionEntries = stream.readBoolean();
+        openEnrollment = stream.readBoolean();
+        storageQuota = stream.readLong();
+        tabConfiguration = stream.readString();
+        allowWikiComments = stream.readBoolean();
+        turnitinComments = stream.readString();
+        selfEnrollment = stream.readBoolean();
+        license = stream.readString();
+        indexed = stream.readBoolean();
+        restrictEnrollmentsToCourseDates = stream.readBoolean();
+        // "template_course_id bigint"
+        locale = stream.readString();
+        settings = stream.readString();
+        replacementCourseId = stream.readLong();
+        stuckSisFields = stream.readString();
+        publicDescription = stream.readString();
+        selfEnrollmentCode = stream.readString();
+        integrationId = stream.readString();
+        timeZone = stream.readString();
+        ltiContextId = stream.readString();
+        turnitinId = stream.readLong();
+    }
+
+    @Override
+    public void writeSQL(SQLOutput stream) throws SQLException {
+        stream.writeLong(id);
+        stream.writeString(name);
+        stream.writeString(groupWeightingScheme);
+        stream.writeLong(oldAccountId);
+        stream.writeString(workflowState);
+        stream.writeString(uuid);
+        stream.writeTimestamp(startAt);
+        stream.writeTimestamp(concludeAt);
+        stream.writeLong(gradingStandardId);
+        stream.writeBoolean(isPublic);
+        stream.writeBoolean(allowStudentWikiEdits);
+        stream.writeTimestamp(createdAt);
+        stream.writeTimestamp(updatedAt);
+        stream.writeBoolean(showPublicContextMessages);
+        stream.writeString(syllabusBody);
+        stream.writeBoolean(allowStudentForumAttachments);
+        stream.writeString(defaultWikiEditingRoles);
+        // "wiki_id bigint";
+        stream.writeBoolean(allowStudentOrganizedGroups);
+        stream.writeString(courseCode);
+        stream.writeString(defaultView);
+        // "abstract_course_id bigint"
+        // "root_account_id bigint"
+        // "enrollment_term_id bigint",
+        stream.writeString(sisSourceId);
+        // "sis_batch_id bigint"
+        stream.writeBoolean(showAllDiscussionEntries);
+        stream.writeBoolean(openEnrollment);
+        stream.writeLong(storageQuota);
+        stream.writeString(tabConfiguration);
+        stream.writeBoolean(allowWikiComments);
+        stream.writeString(turnitinComments);
+        stream.writeBoolean(selfEnrollment);
+        stream.writeString(license);
+        stream.writeBoolean(indexed);
+        stream.writeBoolean(restrictEnrollmentsToCourseDates);
+        // "template_course_id bigint"
+        stream.writeString(locale);
+        stream.writeString(settings);
+        stream.writeLong(replacementCourseId);
+        stream.writeString(stuckSisFields);
+        stream.writeString(publicDescription);
+        stream.writeString(selfEnrollmentCode);
+        stream.writeString(integrationId);
+        stream.writeString(timeZone);
+        stream.writeString(ltiContextId);
+        stream.writeLong(turnitinId);
     }
 }
