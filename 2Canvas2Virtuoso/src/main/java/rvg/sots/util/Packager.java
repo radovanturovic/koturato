@@ -26,7 +26,7 @@ public class Packager {
         FileOutputStream fos = new FileOutputStream(newPath);
         ZipOutputStream zos = new ZipOutputStream(fos);
         String[] ids = id.split(" ");
-        ArrayList<String> files = new ArrayList<>();
+        ArrayList<String> files = new ArrayList<String>();
         for (String pid :
                 ids) {
             try {

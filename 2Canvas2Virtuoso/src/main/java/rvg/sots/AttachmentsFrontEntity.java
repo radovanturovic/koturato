@@ -115,7 +115,7 @@ public class AttachmentsFrontEntity{
         // creating session object
         Session session = factory.openSession();
 
-        ArrayList<AttachmentsFrontEntity> result = new ArrayList<>();
+        ArrayList<AttachmentsFrontEntity> result = new ArrayList<AttachmentsFrontEntity>();
         Query query = session.createQuery("from AttachmentsEntity");
         java.util.List<AttachmentsEntity> list = query.list();
         session.close();
