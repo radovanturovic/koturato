@@ -3,14 +3,12 @@ package rvg.sots;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.*;
+import org.hibernate.query.Query;
 import org.postgresql.pljava.annotation.MappedUDT;
-import rvg.Interchange;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

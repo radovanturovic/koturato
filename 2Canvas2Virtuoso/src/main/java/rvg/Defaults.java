@@ -7,6 +7,7 @@ import rvg.sots.AttachmentsFrontEntity;
 import virtuoso.jena.driver.VirtModel;
 
 import java.io.*;
+import java.util.Date;
 import java.util.Properties;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Properties;
  */
 public class Defaults {
 
-    static String prefix = "http://test.sots.sv.gvr/";
+    static String prefix = "http://dev.sots.sv.gvr/";
     static int prefixLength = prefix.length();
 
     private static VirtModel vm = null;

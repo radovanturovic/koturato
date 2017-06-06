@@ -1,18 +1,15 @@
 package rvg.sots;
 
-import org.postgresql.pljava.annotation.Function;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.*;
 import org.hibernate.query.Query;
 import org.postgresql.pljava.annotation.MappedUDT;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.PrintWriter;
 import java.sql.*;
-import java.util.Date;
+import java.util.List;
 
 /**
  * Created by charmingc0d3r on 4.11.16..
@@ -20,7 +17,7 @@ import java.util.Date;
 @XmlRootElement
 @Entity
 @Table(name = "attachments", schema = "public", catalog = "canvas_development")
-@MappedUDT(name = "attachments", schema = "public", structure = {"id bigint",
+@MappedUDT(name = "attachments", schema = "public"/*, structure = {"id bigint",
         "context_id bigint",
         "context_type character varying",
         "size bigint",
@@ -54,7 +51,7 @@ import java.util.Date;
         //"replacement_attachment_id bigint",
         //"usage_rights_id bigint",
         "modified_at timestamp without time zone"
-})
+}*/)
 public class AttachmentsEntity implements SQLData{
     private long id;
     private Long contextId;
@@ -62,6 +59,7 @@ public class AttachmentsEntity implements SQLData{
     private Long size;
     private Long folderId;
     private String contentType;
+    @Column(columnDefinition="TEXT")
     private String filename;
     private String uuid;
     private String displayName;
@@ -517,33 +515,23 @@ public class AttachmentsEntity implements SQLData{
                 '}';
     }
 
-    @Function
-    public static String triggeredFunction(Long id) {
-        try{
-            //List<String> string = new ArrayList<String>();
-            //string.add(new Date().toString() + " || id: " + id);
-            //Files.write(Paths.get("/home/charmingc0d3r/sotsv.debug.txt"), string, UTF_8,APPEND, CREATE);
-            AttachmentsEntity ae = AttachmentsEntity.getById(id);
-            return ae.toString();
-        } catch (Exception e) {
-            return e.toString();
-        }
-    }
+    public static List<AttachmentsEntity> getAll() {
 
-    @Function
-    public static String triggeredFunction(int id) {
-        return triggeredFunction(new Long(id));
-    }
+        Configuration c = new Configuration();
+        c.configure("hibernate.config.xml");
 
-    public static void triggeredFunction(AttachmentsEntity entity) {
-        try{
-            PrintWriter writer = new PrintWriter("~/debug.txt", "UTF-8");
-            writer.println(new Date().toString() + " || entity: " + entity.toString());
-            writer.close();
-        } catch (Exception e) {
-        }
-    }
+        // creating seession factory object
+        SessionFactory factory = c.buildSessionFactory();
 
+        // creating session object
+        Session session = factory.openSession();
+        //result = session.get(AttachmentsEntity.class,id);
+        Query query = session.createQuery("from AttachmentsEntity",AttachmentsEntity.class);
+        java.util.List<AttachmentsEntity> list = query.list();
+        session.close();
+        factory.close();
+        return list;
+    }
     public static AttachmentsEntity getById(Long id) {
 
         Configuration c = new Configuration();

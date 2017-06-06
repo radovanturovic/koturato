@@ -6,6 +6,8 @@ import rvg.sots.CoursesEntity;
 import rvg.sv.*;
 import virtuoso.jena.driver.VirtModel;
 
+import java.io.PrintWriter;
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -69,7 +71,13 @@ public class Interchange {
     }
     public static LOM LearningObjectPostgresToVirtuoso(AttachmentsEntity learningObject) {
         Long id = learningObject.getId();
-        VirtModel demode = Defaults.getVirtuosoModel();
+        VirtModel demode = null;
+        try {
+            demode = Defaults.getVirtuosoModel();
+        } catch (Exception e) {
+        }
+        if (demode == null)
+            return null;
         /*
         * Pravljenje korenskog cvora.
         */
@@ -111,12 +119,14 @@ public class Interchange {
         /*
         * Odredjivanje tipa resursa. (prezentacija, tekst, slika, video, itd.)
         */
-        Educational educational = lom_DOT_owlFactory.createEducational(Defaults.getFullId("e"+id),demode);
-        LangString educationalResourceType = lom_DOT_owlFactory.createLangString(Defaults.getFullId("eduRET"+id),demode);
-        educationalResourceType.addDat_DOT_las_DOT_language("sr");
-        educationalResourceType.addDat_DOT_las_DOT_string(learningObject.getAttachmentType());
-        educational.addEducationalLearningResourceType(educationalResourceType);
-        result.addLomEducational(educational);
+        if (learningObject.getAttachmentType()!=null) {
+            Educational educational = lom_DOT_owlFactory.createEducational(Defaults.getFullId("e" + id), demode);
+            LangString educationalResourceType = lom_DOT_owlFactory.createLangString(Defaults.getFullId("eduRET" + id), demode);
+            educationalResourceType.addDat_DOT_las_DOT_language("sr");
+            educationalResourceType.addDat_DOT_las_DOT_string(learningObject.getAttachmentType());
+            educational.addEducationalLearningResourceType(educationalResourceType);
+            result.addLomEducational(educational);
+        }
 
         /*
         * Dodela kompetencija resursu.

@@ -4,6 +4,8 @@ import org.apache.jena.rdf.model.StmtIterator;
 import rvg.sv.*;
 import virtuoso.jena.driver.VirtModel;
 
+import java.io.*;
+
 /**
  * Created by charmingc0d3r on 21.10.16..
  */
@@ -15,7 +17,6 @@ public class TestVirtuosoDrajvera {
         Model model = ModelFactory.createDefaultModel();
         VirtModel vmodel = VirtModel.openDatabaseModel(PREFIX,"localhost:1111","dba","dba");
         vmodel.add(model);
-
 // factories get or create resources as needed
         LOM lom = lom_DOT_owlFactory.createLOM(PREFIX + "lom01", vmodel);
         GIdentifier gi = lom_DOT_owlFactory.createGIdentifier(PREFIX + "gide01", vmodel);

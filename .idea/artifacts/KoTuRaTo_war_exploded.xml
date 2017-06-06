@@ -1,6 +1,12 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="KoTuRaTo:war exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/KoTuRaTo_war_exploded</output-path>
+    <properties id="ant-preprocessing">
+      <options enabled="true">
+        <file>file://$PROJECT_DIR$/src/main/server-pre.ant</file>
+        <target>main</target>
+      </options>
+    </properties>
     <root id="root">
       <element id="javaee-facet-resources" facet="KoTuRaTo/web/Web" />
       <element id="directory" name="WEB-INF">

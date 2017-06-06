@@ -43,7 +43,6 @@ public class NastavniResursi {
 
     @POST
     @Path("/{id}/type")
-    //@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public static void setType(@PathParam("id") Long id, @FormParam("type") String type) {
         AttachmentsFrontEntity afe = new AttachmentsFrontEntity();
         afe.setCore(AttachmentsEntity.getById(id));
@@ -53,7 +52,6 @@ public class NastavniResursi {
 
     @POST
     @Path("/{id}/competencies")
-    //@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public static void setCompetencies(@PathParam("id") Long id, @FormParam("competencies") List<String> competencies) {
         AttachmentsFrontEntity afe = new AttachmentsFrontEntity();
         afe.setCore(AttachmentsEntity.getById(id));
@@ -63,7 +61,6 @@ public class NastavniResursi {
 
     @POST
     @Path("/{id}/typeandcompetencies")
-    //@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public static void setTypeAndCompetencies(@PathParam("id") Long id,@FormParam("type") String type, @FormParam("competencies") List<String> competencies) {
         AttachmentsFrontEntity afe = new AttachmentsFrontEntity();
         afe.setCore(AttachmentsEntity.getById(id));
@@ -200,4 +197,5 @@ public class NastavniResursi {
         }
         return response.build();
     }
+
 }
