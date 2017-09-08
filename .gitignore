@@ -71,3 +71,6 @@ hs_err_pid*
 # user ignoritas
 rsc/**
 Примери/**
+jdk/**
+logovi/**
+serveri/**
