@@ -23,13 +23,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Jersey-2.2" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Tomcat 8.0.36" level="application_server_libraries" />
     <orderEntry type="module" module-name="2Canvas2Virtuoso" />
-    <orderEntry type="library" name="Jersey-2.2" level="project" />
-    <orderEntry type="library" name="Jersey-2.2" level="project" />
     <orderEntry type="library" name="Maven: javax.ws.rs:javax.ws.rs-api:2.0.1" level="project" />
-    <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
     <orderEntry type="library" name="Maven: org.imsglobal:basiclti-util:1.1.2" level="project" />
+    <orderEntry type="library" name="virt_jena3" level="project" />
+    <orderEntry type="library" name="virtjdbc4" level="project" />
   </component>
 </module>

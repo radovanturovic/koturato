@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AntConfiguration">
-    <buildFile url="file://$PROJECT_DIR$/2Canvas2Virtuoso/src/2c2v-post.ant" />
-    <buildFile url="file://$PROJECT_DIR$/2Canvas2Virtuoso/src/2c2v-pre.ant" />
-    <buildFile url="file://$PROJECT_DIR$/src/main/server-pre.ant" />
+    <buildFile url="file://$PROJECT_DIR$/skripte/mravci/server-pre.ant" />
   </component>
 </project>

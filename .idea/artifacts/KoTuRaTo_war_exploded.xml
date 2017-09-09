@@ -2,10 +2,7 @@
   <artifact type="exploded-war" name="KoTuRaTo:war exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/KoTuRaTo_war_exploded</output-path>
     <properties id="ant-preprocessing">
-      <options enabled="true">
-        <file>file://$PROJECT_DIR$/src/main/server-pre.ant</file>
-        <target>main</target>
-      </options>
+      <options enabled="true" />
     </properties>
     <root id="root">
       <element id="javaee-facet-resources" facet="KoTuRaTo/web/Web" />
@@ -79,6 +76,7 @@
           <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.4.01" />
           <element id="library" level="project" name="virt_jena3" />
           <element id="library" level="project" name="virtjdbc4" />
+          <element id="library" level="project" name="Maven: org.imsglobal:basiclti-util:1.1.2" />
         </element>
       </element>
     </root>

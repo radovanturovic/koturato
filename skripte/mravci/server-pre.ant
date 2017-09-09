@@ -1,0 +1,34 @@
+<project name="prerequisites" default="main">
+
+    <property name="homeu" value="${user.home}"/>
+    <property name="homes" value="../../serveri/glassfish"/>
+    <property name="modules" value="../../serveri/glassfish/glassfish/modules"/>
+    <property name="jar.log" value="${homeu}/.m2/repository/org/jboss/logging/jboss-logging/3.3.0.Final/jboss-logging-3.3.0.Final.jar"/>
+    <property name="jar.moxy" value="../../debubicarenje/org.eclipse.persistence.moxy.jar"/>
+
+
+    <target name="main" depends="dirs.check" unless="nonexistant">
+        <copy todir="${modules}">
+            <file file="${jar.log}"/>
+            <file file="${jar.moxy}"/>
+        </copy>
+        <echo>Копиране су датотеке за логовање и моксирање. (Шта год моксирање било... :|)</echo>
+        <delete file="${modules}/jboss-logging.jar"/>
+        <echo>Обрисано постојеће логовање.</echo>
+        <move file="${modules}/jboss-logging-3.3.0.Final.jar" tofile="${modules}/jboss-logging.jar"/>
+        <echo>Нови логер је подешен. Сервер је намештен. Сад је све у реду! &lt;3</echo>
+    </target>
+
+    <target name="dirs.check">
+        <condition property="nonexistant">
+            <not><available file="${homes}" type="dir"/></not>
+        </condition>
+    </target>
+
+    <target name="postle-gradje-2c2v">
+        <copy todir="../../rsc" overwrite="true">
+            <file file="../../out/artifacts/2Canvas2Virtuoso_jar/2Canvas2Virtuoso.jar"/>
+        </copy>
+    </target>
+
+</project>

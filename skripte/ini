@@ -1,0 +1,2 @@
+touch @init.rtg
+chmod a+rw @init.rtg
