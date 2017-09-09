@@ -1,13 +1,23 @@
+BKUPGVR=$(pwd)
+if [ -z ${KOTUROOT+x} ]; then
+  cd $(dirname $0)/..
+  export KOTUROOT=$(pwd)
+  cd $BKUPGVR
+else
+  echo KOTUROOT већ постоји: $KOTUROOT
+fi
+
 function prerequisites_gvr {
   sudo apt-get install postgresql pgadmin3 autoconf automake libtool \
                        flex bison gperf gawk m4 make openssl libssl-dev \
-                       postgresql-contrib
+                       postgresql-contrib maven libecpg-dev libkrb5-dev \
+                       postgresql-server-dev-9.* g++ rpl
   sudo apt-get install software-properties-common
   sudo add-apt-repository ppa:brightbox/ruby-ng
   sudo apt-get update
   sudo apt-get install ruby2.4 ruby2.4-dev zlib1g-dev libxml2-dev \
                        libsqlite3-dev postgresql libpq-dev \
-                       libxmlsec1-dev curl make g++
+                       libxmlsec1-dev curl make g++ ruby-pg
   curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
   sudo apt-get install -y nodejs build-essential
   sudo -u postgres createuser $USER
@@ -19,8 +29,9 @@ function prerequisites_gvr {
 
 function virtuoso_gvr_install {
   BKUPGVR=$(pwd)
-  echo $BKUPGVR
-  cd ../serveri
+  cd $KOTUROOT
+  mkdir -p serveri
+  cd serveri
   git clone https://github.com/openlink/virtuoso-opensource.git virtuosoi
   mkdir -p virtuoso
   cd virtuoso
@@ -39,47 +50,37 @@ function virtuoso_gvr_install {
 
 function canvas_gvr_install {
   BKUPGVR=$(pwd)
-  cd ../serveri
-  git clone https://github.com/instructure/canvas-lms.git canvas
-  mkdir -p canvas/djem
-  cd canvas/djem
-  PREFIXANJE=$(pwd)
-  export GEM_HOME=$PREFIXANJE
-  echo 'Џем кућица: ' $GEM_HOME
-  cd ..
-  echo 'Креће инсталација.'
-  gem install bundler --version 1.15.3
-  echo 'Бандлер је инсталиран.'
-  sudo gem update --system
-  echo 'Гем је ажуриран.'
-  $GEM_HOME/bin/bundle install
-  echo 'Инсталација потребних драгуља је готова.'
-  npm install
-  echo 'Инсталација нпм-ом је готова у првој фази. Додајем Кафаскрипт.'
-  sudo npm install -g coffee-script@1.6.2
-  echo 'Готова инсталација.'
-  for config in amazon_s3 delayed_jobs domain file_store outgoing_mail \
-                security external_migration; \
-    do cp -v config/$config.yml.example config/$config.yml;
-  done
-  echo 'Готово конфиглуписање.'
-  cp config/dynamic_settings.yml.example config/dynamic_settings.yml
-  cp config/database.yml.example config/database.yml
-  echo 'Накопирао сам неке глупости још.'
-  createdb canvas_development
-  echo 'Направио сам базу података.'
-  $GEM_HOME/bin/bundle exec rake db:initial_setup
-  echo 'Иницијално постављање података.'
-  $GEM_HOME/bin/bundle exec rspec spec/models/assignment_spec.rb
-  echo 'Штагод.'
-  $GEM_HOME/bin/bundle exec rake canvas:compile_assets
-  echo 'Све је готово сад.'
+  cd $KOTUROOT
+  mkdir -p serveri
+  cd serveri
+  curl -O https://raw.githubusercontent.com/FreedomBen/canvas-development-tools/master/CODES.sh
+  rpl 'checkoutname="canvas-lms"' 'checkoutname="canvas"; alias ruby=ruby2.4' CODES.sh
+  rpl 'canvasdir="$HOME"' 'canvasdir=$(echo $KOTUROOT"/serveri"); echo $canvasdir; export GEM_HOME=$KOTUROOT/serveri/canvas/djemsi' CODES.sh
+  rpl 'bundle exec' '$GEM_HOME/bin/bundle exec' CODES.sh
+  rpl 'bundle _' '$GEM_HOME/bin/bundle _' CODES.sh
+  rpl 'bundle install' '$GEM_HOME/bin/bundle install' CODES.sh
+  rpl 'bundle list' '$GEM_HOME/bin/bundle list' CODES.sh
+  rpl 'which bundler' 'which $GEM_HOME/bin/bundler' CODES.sh
+  rpl 'bundle config' '$GEM_HOME/bin/bundle config' CODES.sh
+  rpl 'installGems || die "' 'sudo env REALLY_GEM_UPDATE_SYSTEM=1 gem update --system; installGems || die "' CODES.sh
+  rpl 'sudo apt-get -y install rubygems1.9.1' 'echo -e "${green}Глупи инсталатор рубиџемсија верзије 1.9.1 је уклоњен. Слободни смо од те напасти!!! Јеееееееееееј! :D${restore}"' CODES.sh
+  rpl 'sudo apt-get -y install ruby-dev' 'echo -e "${green}Глупи инсталатор рубија верзије 2.штабило што није 2.4 је уклоњен. Слободни смо од те напасти!!! Јеееееееееееј! :D${restore}"' CODES.sh
+  rpl 'sudo apt-get -y sudo apt-get -y install ruby-pg' 'echo -e "${green}Глупи инсталатор рубипагана је уклоњен предострожности ради. Слободни смо од те напасти!!! Јеееееееееееј! :D${restore}"' CODES.sh
+  rpl 'BUNDLE_VER=$(ruby -e "$(cat Gemfile.d/_before.rb | grep req_bundler_version | head -1); puts \"#{req_bundler_version_ceiling}\"")' \
+      'BUNDLE_VER=$(ruby -e "$(cat Gemfile.d/_before.rb | grep req_bundler_version | head -1); puts \"#{req_bundler_version_ceiling}\""); BUNDLE_VER=1.14.6' CODES.sh
+  rpl 'buildCanvasAssets || die ' 'rpl "File.expand_path("'"'"'"'"'"'"../.."'"'"'"'"'"'", __FILE__)" \
+      "File.expand_path("'"'"'"'"'"'"../.."'"'"'"'"'"'", __FILE__).force_encoding('"'"'utf-8'"'"')" $KOTUROOT/serveri/canvas/djemsi/gems/bundler-1.14.6/lib/bundler/shared_helpers.rb; buildCanvasAssets || die ' CODES.sh
+  chmod +x CODES.sh
+  ./CODES.sh --full
+  rm CODES.sh
   cd $BKUPGVR
+  echo Све је готово!!! :)
 }
 
-function glassfish_install {
+function glassfish_gvr_install {
   BKUPGVR=$(pwd)
   echo $BKUPGVR
+  mkdir -p ../serveri
   cd ../serveri
   GLSF=$(find ../rsc -name "glassfish-4.1.2*.zip" | head -n 1)
   unzip $GLSF -d .
@@ -88,7 +89,7 @@ function glassfish_install {
   cd $BKUPGVR
 }
 
-function jdk8_install {
+function jdk8_gvr_install {
   BKUPGVR=$(pwd)
   echo $BKUPGVR
   cd ..
@@ -98,5 +99,23 @@ function jdk8_install {
   tar -zxvf $GLSF
   GLSF=$(find . -name "jdk1.8*" | head -n 1)
   mv $GLSF jdk8
+  cd $BKUPGVR
+}
+
+function pljava_gvr_install {
+  BKUPGVR=$(pwd)
+  export JAVA_HOME=../jdk/jdk8
+  alias java=$JAVA_HOME/bin/java
+  alias javac=$JAVA_HOME/bin/javac
+  git clone https://github.com/tada/pljava.git pljava
+  if [ $? -eq 0 ]; then
+    echo ОКИ ДОКИ
+    cd pljava
+    mvn clean install
+    # TODO
+  else
+    echo Њаааааа...
+  fi
+  rm -rf pljava
   cd $BKUPGVR
 }
