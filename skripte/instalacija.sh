@@ -74,7 +74,7 @@ function canvas_gvr_install {
   ./CODES.sh --full
   rm CODES.sh
   cd $BKUPGVR
-  echo Све је готово!!! :)
+  echo Све је готово!!! :\)
 }
 
 function glassfish_gvr_install {
@@ -112,7 +112,21 @@ function pljava_gvr_install {
     echo ОКИ ДОКИ
     cd pljava
     mvn clean install
-    # TODO
+    if [ $? -eq 0 ]; then
+      PLJAR=$(find pljava-packaging/target/ -name 'pljava-pg*.jar')
+      sudo $KOTUROOT/jdk/jdk8/bin/java -jar $PLJAR
+      cp -r $KOTUROOT/jdk/jdk8 /tmp/jdk8
+      psql -f $KOTUROOT/skripte/sikul/.pljava-set.sql canvas_test
+      rpl 'canvas_test' 'canvas_development' $KOTUROOT/skripte/sikul/.pljava-set.sql
+      psql -f $KOTUROOT/skripte/sikul/.pljava-set.sql canvas_development
+      rpl 'canvas_development' 'canvas_queue_development' $KOTUROOT/skripte/sikul/.pljava-set.sql
+      psql -f $KOTUROOT/skripte/sikul/.pljava-set.sql canvas_queue_development
+      rpl 'canvas_queue_development' 'canvas_test' $KOTUROOT/skripte/sikul/.pljava-set.sql
+      psql -f $KOTUROOT/skripte/sikul/.pljava.sql canvas_test
+      psql -f $KOTUROOT/skripte/sikul/.pljava.sql canvas_development
+      psql -f $KOTUROOT/skripte/sikul/.pljava.sql canvas_queue_development
+      cp $PLJAR $KOTUROOT/rsc/pljava.jar
+    fi
   else
     echo Њаааааа...
   fi
