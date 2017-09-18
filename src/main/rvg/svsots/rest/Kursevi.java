@@ -1,5 +1,8 @@
 package rvg.svsots.rest;
 
+import jersey.repackaged.com.google.common.base.Predicates;
+import jersey.repackaged.com.google.common.collect.Collections2;
+import jersey.repackaged.com.google.common.collect.Lists;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -46,12 +49,13 @@ public class Kursevi {
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public static List<CoursesEntity> getAll() {
-        return CoursesEntity.getAll();
+        return Lists.newArrayList(Collections2.filter(
+                CoursesEntity.getAll(), (course) -> !"deleted".equals(course.getWorkflowState())));
     }
 
     @POST
     @Path("/generate")
-    public Response getExport(@FormParam("ids") String ids, @FormParam("name") String name) throws IOException {
+    public Response generate(@FormParam("ids") String ids, @FormParam("name") String cname) throws IOException {
         Response.ResponseBuilder response;
         if (ids == null)
             response = Response.noContent();
@@ -60,23 +64,38 @@ public class Kursevi {
         else {
             String[] idi = ids.split(",");
             ArrayList<AttachmentsFrontEntity> afes = new ArrayList<>();
+
             for (String id :
                     idi) {
                 AttachmentsFrontEntity afe = AttachmentsFrontEntity.getById(Long.parseLong(id));
-                if (afe != null)
-                    afes.add(afe);
+                if (afe != null) {
+                    if (afe.getCore().getFileState().equals("available")) {
+                        System.out.println("afe.getCore().getRootAttachmentId() = " + afe.getCore().getRootAttachmentId());
+                        if (afe.getCore().getRootAttachmentId() == null)
+                            afes.add(afe);
+                        else {
+                            afe = AttachmentsFrontEntity.getById(afe.getCore().getRootAttachmentId());
+                            if (afe != null)
+                                afes.add(afe);
+                        }
+                    }
+                }
             }
             if (afes.isEmpty())
                 response = Response.noContent();
             else {
-
+                String courseId = makeCourse(cname);
+                for (AttachmentsFrontEntity afe :
+                        afes) {
+                    uploadFileToCourse(courseId, afe);
+                }
                 response = Response.ok();
             }
         }
         return response.build();
     }
 
-    public static String makeCourse(String courseName) {
+    private static String makeCourse(String courseName) {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpPost request = new HttpPost("http://localhost:3000/api/v1/accounts/3/courses");
             request.addHeader("Authorization", getAuthorizationString());
@@ -99,7 +118,7 @@ public class Kursevi {
         }
     }
 
-    public static void uploadFileToCourse(String courseId, AttachmentsFrontEntity afe) {
+    private static void uploadFileToCourse(String courseId, AttachmentsFrontEntity afe) {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpPost request = new HttpPost("http://localhost:3000/api/v1/courses/"+courseId+"/files");
             request.addHeader("Authorization", getAuthorizationString());
@@ -128,7 +147,7 @@ public class Kursevi {
             }
 
             HttpEntity requestEntity = meb
-                    .addBinaryBody("file", new File(getFilePathForRealNow(Defaults.getProps22().getProperty("canvasAttachmentsPath")+String.format("%04d", afe.getCore().getId())+"/"+afe.getCore().getFilename())))
+                    .addBinaryBody("file", new File(Defaults.getProps22().getProperty("canvasAttachmentsPath")+String.format("%04d", afe.getCore().getId())+"/"+afe.getCore().getFilename()))
                     .build();
             request.setEntity(requestEntity);
             String location;
@@ -155,48 +174,7 @@ public class Kursevi {
         }
     }
 
-    private static String getFilePathForRealNow(String canvasAttachmentsPath) {
-        int first_slash = canvasAttachmentsPath.indexOf("/");
-        String first = canvasAttachmentsPath.substring(0,first_slash);
-        String second = canvasAttachmentsPath.substring(first_slash);
-        if (first.startsWith("$")) {
-            first = System.getenv(first.substring(1));
-        }
-        return first + second;
-    }
-
     private static String getAuthorizationString() {
         return "Bearer VJ9w5dtL31g55XU7y16SWkLdMBHeTh8yyzi0VckidTWUYqRGb4vCsZXYOsZmTW7R";
-    }
-
-    public static void main(String[] args) {
-        String courseId = makeCourse("ллл");
-        String ids = "2,20";
-        String[] idi = ids.split(",");
-        ArrayList<AttachmentsFrontEntity> afes = new ArrayList<>();
-        for (String id :
-                idi) {
-            AttachmentsFrontEntity afe = AttachmentsFrontEntity.getById(Long.parseLong(id));
-            if (afe != null) {
-                if (afe.getCore().getFileState().equals("available")) {
-                    System.out.println("afe.getCore().getRootAttachmentId() = " + afe.getCore().getRootAttachmentId());
-                    if (afe.getCore().getRootAttachmentId() == null)
-                        afes.add(afe);
-                    else {
-                        afe = AttachmentsFrontEntity.getById(afe.getCore().getRootAttachmentId());
-                        if (afe != null)
-                            afes.add(afe);
-                    }
-                }
-            }
-        }
-        if (afes.isEmpty())
-            System.out.println("Трт Милојка");
-        else {
-            for (AttachmentsFrontEntity afe :
-                    afes) {
-                uploadFileToCourse(courseId, afe);
-            }
-        }
     }
 }

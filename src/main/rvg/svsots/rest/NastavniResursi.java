@@ -1,5 +1,7 @@
 package rvg.svsots.rest;
 
+import jersey.repackaged.com.google.common.collect.Collections2;
+import jersey.repackaged.com.google.common.collect.Lists;
 import rvg.Defaults;
 import rvg.Interchange;
 import rvg.sots.AttachmentsEntity;
@@ -38,7 +40,8 @@ public class NastavniResursi {
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public static List<AttachmentsFrontEntity> getAll() {
-        return AttachmentsFrontEntity.getAll();
+        return Lists.newArrayList(Collections2.filter(
+                AttachmentsFrontEntity.getAll(), (afe) -> "available".equals(afe.getCore().getFileState())));
     }
 
     @POST
