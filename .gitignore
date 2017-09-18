@@ -74,3 +74,4 @@ rsc/**
 jdk/**
 logovi/**
 serveri/**
+.idea/data*/**
