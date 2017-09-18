@@ -2,13 +2,14 @@
 
     <property name="homeu" value="${user.home}"/>
     <property name="homes" value="../../serveri/glassfish"/>
-    <property name="modules" value="../../serveri/glassfish/glassfish/modules"/>
+    <property name="modules" value="${homes}/glassfish/modules"/>
+    <property name="schemas" value="${homes}/glassfish/lib/schemas"/>
     <property name="jar.log" value="${homeu}/.m2/repository/org/jboss/logging/jboss-logging/3.3.0.Final/jboss-logging-3.3.0.Final.jar"/>
     <property name="jar.moxy" value="../../debubicarenje/org.eclipse.persistence.moxy.jar"/>
 
 
     <target name="main" depends="dirs.check" unless="nonexistant">
-        <copy todir="${modules}">
+        <copy todir="${modules}" overwrite="true">
             <file file="${jar.log}"/>
             <file file="${jar.moxy}"/>
         </copy>
@@ -17,6 +18,9 @@
         <echo>Обрисано постојеће логовање.</echo>
         <move file="${modules}/jboss-logging-3.3.0.Final.jar" tofile="${modules}/jboss-logging.jar"/>
         <echo>Нови логер је подешен. Сервер је намештен. Сад је све у реду! &lt;3</echo>
+        <exec executable="cp">
+            <arg line="-Rf ${homes} /tmp/glassfish"/>
+        </exec>
     </target>
 
     <target name="dirs.check">
@@ -26,9 +30,12 @@
     </target>
 
     <target name="postle-gradje-2c2v">
-        <copy todir="../../rsc" overwrite="true">
-            <file file="../../out/artifacts/2Canvas2Virtuoso_jar/2Canvas2Virtuoso.jar"/>
-        </copy>
+        <exec executable="cp">
+            <arg line="-Rf ../../out/artifacts/2Canvas2Virtuoso_jar/2Canvas2Virtuoso.jar ../../rsc"/>
+        </exec>
+        <exec executable="cp">
+            <arg line="-Rf ../../out/artifacts/2Canvas2Virtuoso_jar/2Canvas2Virtuoso.jar /tmp/2Canvas2Virtuoso.jar"/>
+        </exec>
     </target>
 
 </project>

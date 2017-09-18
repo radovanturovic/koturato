@@ -140,7 +140,7 @@ public class NastavniResursi {
         return all;
     }
 
-    @GET
+    @POST
     @Path("/download")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getFiles(@FormParam("id") String id, @FormParam("imscc") boolean imscc) throws IOException {
@@ -158,7 +158,7 @@ public class NastavniResursi {
         return response.build();
     }
 
-    @GET
+    @POST
     @Path("/export/{cid}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getExport(@PathParam("cid") String cid, @FormParam("scorm") Boolean scorm) throws IOException {
@@ -183,9 +183,11 @@ public class NastavniResursi {
             for (AttachmentsFrontEntity afe :
                     AttachmentsFrontEntity.getAll()) {
                 if (afe.getCore().getContentType().equals("Course") && afe.getCore().getContextId()==lcid)
-                    id += " " + afe.getCore().getId();
+                    id += "," + afe.getCore().getId();
             }
             id = id.trim();
+            if (id.startsWith(","))
+                id = id.substring(1);
             if (id.equals("")) {
                 response = Response.noContent();
                 return response.build();

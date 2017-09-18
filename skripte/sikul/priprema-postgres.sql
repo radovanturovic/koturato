@@ -3,11 +3,6 @@ select sqlj.install_jar(
 	'sots_rvg',
 	true);
 
-select sqlj.replace_jar(
-	'file:/tmp/2Canvas2Virtuoso.jar',
-	'sots_rvg',
-	true);
-
 select sqlj.install_jar(
 	'file:/tmp/jastor.jar',
 	'jastor',
@@ -23,10 +18,7 @@ select sqlj.install_jar(
 	'jbdc',
 	true);
 
-select sqlj.set_classpath('public','sots_rvg');
-select sqlj.set_classpath('public','jastor');
-select sqlj.set_classpath('public','jena');
-select sqlj.set_classpath('public','jbdc');
+select sqlj.set_classpath('public','sots_rvg:jastor:jena:jbdc');
 
 CREATE OR REPLACE FUNCTION toVirtNio(
 	opera varchar,
@@ -43,19 +35,10 @@ CREATE OR REPLACE FUNCTION CtoVirt(
 	AS 'rvg.sots.PostgresFunctions.CtoVirt(java.lang.String)';
 
 CREATE OR REPLACE FUNCTION startup() RETURNS TRIGGER AS $set_id$
-   --declare
---	cuva integer;
    BEGIN
---	create or replace function gtr(code text)
---	returns integer language sql as $$
---	    select current_setting('gtr.' || code)::integer;
---	$$;
 	perform nextval('gorse');
 	raise notice '%', currval('gorse');
---	select currval('gorse')::integer into cuva;
---	set gtr.id to cuva;
 	return new;
---	raise notice '%',
    END;
 $set_id$ LANGUAGE plpgsql;
 

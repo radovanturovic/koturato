@@ -6,8 +6,13 @@ import rvg.sots.AttachmentsEntity;
 import rvg.sots.AttachmentsFrontEntity;
 import virtuoso.jena.driver.VirtModel;
 
-import java.io.*;
-import java.util.Date;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 /**
@@ -25,7 +30,7 @@ public class Defaults {
         if (props22==null) {
             props22 = new Properties();
             try {
-                props22.load(new FileInputStream("2Canvas2Virtuoso.properties"));
+                props22.load(new InputStreamReader(Files.newInputStream(Paths.get("2Canvas2Virtuoso/src/main/resources/2Canvas2Virtuoso.properties")), StandardCharsets.UTF_8));
 
                 prefix = props22.getProperty("virtuosoPrefix");
                 prefixLength = prefix.length();
@@ -56,7 +61,7 @@ public class Defaults {
         return Long.parseLong(substringID(uri,miniPrefix));
     }
     public static String getFullPath(AttachmentsEntity learningObject) {
-        return Defaults.getProps22().getProperty("canvasAttachmentsPath")+"/"+String.format("%04d", learningObject.getId())+"/"+learningObject.getFilename();
+        return Defaults.getProps22().getProperty("canvasAttachmentsPath")+String.format("%04d", learningObject.getId())+"/"+learningObject.getFilename();
     }
     public static String getFullPath(AttachmentsFrontEntity learningObject) {
         return getFullPath(learningObject.getCore());

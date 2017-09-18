@@ -15,8 +15,7 @@ import java.util.Iterator;
  */
 public class Interchange {
     public static CoursesEntity CourseVirtuosoToPostgres(Course course) {
-        CoursesEntity result = CoursesEntity.getById(Defaults.parseID(course.resource().getURI(),"cs"));
-        return result;
+        return CoursesEntity.getById(Defaults.parseID(course.resource().getURI(),"cs"));
     }
     public static Course CoursePostgresToVirtuoso(CoursesEntity course) {
         Course result = lom_DOT_owlFactory.createCourse(Defaults.getFullId("cs"+course.getId()),Defaults.getVirtuosoModel());
@@ -24,8 +23,7 @@ public class Interchange {
         return result;
     }
     public static AttachmentsEntity LearningObjectVirtuosoToPostgres(LOM learningObject) {
-        AttachmentsEntity result = AttachmentsEntity.getById(Defaults.parseID(learningObject.resource().getURI(),"lom"));
-        return result;
+        return AttachmentsEntity.getById(Defaults.parseID(learningObject.resource().getURI(),"lom"));
     }
     public static AttachmentsFrontEntity LearningObjectVirtuosoToPostgresFront(LOM learningObject) {
         AttachmentsFrontEntity result = new AttachmentsFrontEntity();
@@ -106,7 +104,7 @@ public class Interchange {
         /* FIXME: 25.11.16. Ono sto se moze preuzeti iz osobina jeste putanja do svih resursa. Potrebno je dopuniti ovaj
         * deo koda da pogodi doslovnu punu putanju do resursa. Druga opcija je da se svaki put ova putanja izracuna po
         * potrebi da se ne bi puna putanja do datoteke cuvala u bazi podataka. */
-        technical.addTec_DOT_location(Defaults.getProps22().getProperty("canvasAttachmentsPath")+"/"+String.format("%04d", id)+"/"+learningObject.getFilename());
+        technical.addTec_DOT_location(Defaults.getProps22().getProperty("canvasAttachmentsPath")+String.format("%04d", id)+"/"+learningObject.getFilename());
         result.addLomTechnical(technical);
 
         return result;
@@ -115,6 +113,8 @@ public class Interchange {
         LOM result = LearningObjectPostgresToVirtuoso(learningObject.getCore());
         Long id = learningObject.getCore().getId();
         VirtModel demode = Defaults.getVirtuosoModel();
+
+        if (result == null) return null;
 
         /*
         * Odredjivanje tipa resursa. (prezentacija, tekst, slika, video, itd.)

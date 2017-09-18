@@ -57,16 +57,34 @@ function canvas_gvr_startup {
 }
 
 function postgres_gvr_startup {
-  cp $KOTUROOT/rsc/pljava.jar /tmp/pljava.jar
-  cp $KOTUROOT/lib/jastor-1.0.5.jar /tmp/jastor.jar
-  cp $KOTUROOT/lib/virt_jena3.jar /tmp/virt_jena.jar
-  cp $KOTUROOT/lib/virtjdbc4.jar /tmp/virtjdbc.jar
-  cp $KOTUROOT/rsc/2Canvas2Virtuoso.jar /tmp/2Canvas2Virtuoso.jar
-  psql -f $KOTUROOT/skripte/sikul/priprema-postgres.sql canvas_development
+  cp -vr $KOTUROOT/jdk/jdk8 /tmp/jdk8
+  cp -v $KOTUROOT/rsc/pljava.jar /tmp/pljava.jar
+  cp -v $KOTUROOT/lib/jastor-1.0.5.jar /tmp/jastor.jar
+  cp -v $KOTUROOT/lib/virt_jena3.jar /tmp/virt_jena.jar
+  cp -v $KOTUROOT/lib/virtjdbc4.jar /tmp/virtjdbc.jar
+  cp -vf $KOTUROOT/out/artifacts/2Canvas2Virtuoso_jar/2Canvas2Virtuoso.jar /tmp/2Canvas2Virtuoso.jar
+  for baza in canvas_development canvas_queue_development canvas_test; do
+    psql -c "select sqlj.replace_jar('file:/tmp/2Canvas2Virtuoso.jar','sots_rvg',true)" $baza
+  done
+  mkdir -p /tmp/gtrtDEMON
+  chmod a+rw /tmp/gtrtDEMON
+  BKUPGVR=$(pwd)
+  cd /tmp/gtrtDEMON
+  source $KOTUROOT/skripte/ini
+  cd $BKUPGVR
+}
+
+function glassfish_gvr_startup {
+  cp -rf $KOTUROOT/serveri/glassfish /tmp/glassfish
+  cp -vf $KOTUROOT/debubicarenje/org.eclipse.persistence.moxy.jar /tmp/glassfish/glassfish/modules/org.eclipse.persistence.moxy.jar
+  cp -vf $HOME/.m2/repository/org/jboss/logging/jboss-logging/3.3.0.Final/jboss-logging-3.3.0.Final.jar /tmp/glassfish/glassfish/modules/jboss-logging.jar
+  cp -vf $KOTUROOT/2Canvas2Virtuoso/src/main/resources/imsmanifest.xml $KOTUROOT/serveri/canvas/tmp/imsmanifest.xml
+  cp -vf $KOTUROOT/2Canvas2Virtuoso/src/main/resources/scormdriver.zip $KOTUROOT/serveri/canvas/tmp/scormdriver.zip
 }
 
 function gvr_startup {
   virtuoso_gvr_startup
   canvas_gvr_startup
-  pljava_gvr_startup
+  postgres_gvr_startup
+  glassfish_gvr_startup
 }

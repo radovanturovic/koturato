@@ -76,6 +76,7 @@ public class AttachmentsEntity implements SQLData{
     private Timestamp lastLockAt;
     private Timestamp lastUnlockAt;
     private Boolean couldBeLocked;
+    private Long rootAttachmentId;
     private Long clonedItemId;
     private String migrationId;
     private String namespace;
@@ -305,6 +306,16 @@ public class AttachmentsEntity implements SQLData{
 
     public void setCouldBeLocked(Boolean couldBeLocked) {
         this.couldBeLocked = couldBeLocked;
+    }
+
+    @Basic
+    @Column(name = "root_attachment_id", nullable = true)
+    public Long getRootAttachmentId() {
+        return rootAttachmentId;
+    }
+
+    public void setRootAttachmentId(Long rootAttachmentId) {
+        this.rootAttachmentId = rootAttachmentId;
     }
 
     @Basic

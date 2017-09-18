@@ -25,7 +25,7 @@ public class Packager {
         result[1] = newPath;
         FileOutputStream fos = new FileOutputStream(newPath);
         ZipOutputStream zos = new ZipOutputStream(fos);
-        String[] ids = id.split(" ");
+        String[] ids = id.split(",");
         ArrayList<String> files = new ArrayList<String>();
         for (String pid :
                 ids) {
@@ -37,12 +37,10 @@ public class Packager {
         }
         if (scorm) {
             ZipInputStream zis = new ZipInputStream(new FileInputStream(Defaults.getSCORMDriverPath()));
-            copyZipEntryFiles(zos,zis);
+            copyZipEntryFiles(zos, zis);
             zis.close();
-            writeZipEntryManifest(zos,files,scorm,courseName);
-        } else if (imscc) {
-            writeZipEntryManifest(zos,files,scorm,courseName);
         }
+        writeZipEntryManifest(zos,files,scorm,courseName);
         zos.close();
         return result;
     }

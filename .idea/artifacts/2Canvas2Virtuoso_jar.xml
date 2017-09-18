@@ -163,6 +163,8 @@
       <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.3" />
       <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.3" />
       <element id="library" level="project" name="Maven: org.imsglobal:basiclti-util:1.1.2" />
+      <element id="library" level="project" name="Maven: javax.json:javax.json-api:1.0" />
+      <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpmime:4.5.3" />
     </root>
   </artifact>
 </component>

@@ -68,7 +68,7 @@ public class AttachmentsFrontEntity{
         // creating session object
         Session session = factory.openSession();
 
-        AttachmentsFrontEntity result = null;
+        AttachmentsFrontEntity result = new AttachmentsFrontEntity();
         Query query = session.createQuery("from AttachmentsEntity");
         java.util.List<AttachmentsEntity> list = query.list();
 

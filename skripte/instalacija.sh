@@ -45,6 +45,7 @@ function virtuoso_gvr_install {
   make install
   cd ..
   rm -rf virtuosoi
+  # $KOTUROOT/2Canvas2Virtuoso/src/main/resources/rvgLOM-rdf.owl
   cd $BKUPGVR
 }
 
@@ -116,16 +117,17 @@ function pljava_gvr_install {
       PLJAR=$(find pljava-packaging/target/ -name 'pljava-pg*.jar')
       sudo $KOTUROOT/jdk/jdk8/bin/java -jar $PLJAR
       cp -r $KOTUROOT/jdk/jdk8 /tmp/jdk8
-      psql -f $KOTUROOT/skripte/sikul/.pljava-set.sql canvas_test
-      rpl 'canvas_test' 'canvas_development' $KOTUROOT/skripte/sikul/.pljava-set.sql
-      psql -f $KOTUROOT/skripte/sikul/.pljava-set.sql canvas_development
-      rpl 'canvas_development' 'canvas_queue_development' $KOTUROOT/skripte/sikul/.pljava-set.sql
-      psql -f $KOTUROOT/skripte/sikul/.pljava-set.sql canvas_queue_development
-      rpl 'canvas_queue_development' 'canvas_test' $KOTUROOT/skripte/sikul/.pljava-set.sql
-      psql -f $KOTUROOT/skripte/sikul/.pljava.sql canvas_test
-      psql -f $KOTUROOT/skripte/sikul/.pljava.sql canvas_development
-      psql -f $KOTUROOT/skripte/sikul/.pljava.sql canvas_queue_development
+      for baza in canvas_development canvas_queue_development canvas_test; do
+        psql -c 'CREATE EXTENSION pljava' $baza
+        psql -c 'GRANT USAGE ON LANGUAGE java TO PUBLIC' $baza
+        psql -c "ALTER DATABASE "$baza" SET pljava.libjvm_location='/tmp/jdk8/jre/lib/amd64/server/libjvm.so'" $baza
+        psql -c 'CREATE SEQUENCE gorse INCREMENT BY 1 MINVALUE 0 MAXVALUE 999999999 START 0' $baza
+        psql -c 'ALTER USER canvas WITH SUPERUSER' $baza
+        psql -c 'CREATE ROLE koturato LOGIN SUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION' $baza
+        psql -c 'ALTER USER koturato WITH PASSWORD '"'"'otarutok'"'" $baza
+      done
       cp $PLJAR $KOTUROOT/rsc/pljava.jar
+      psql -f $KOTUROOT/skripte/sikul/priprema-postgres.sql canvas_development
     fi
   else
     echo Њаааааа...
